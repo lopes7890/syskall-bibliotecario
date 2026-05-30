@@ -46,3 +46,7 @@ form.addEventListener("submit", async (e) => {
         btn.disabled = false;
     }
 });
+
+function painel (){
+    window.location.href = "https://syskall-bibliotecario.vercel.app/painel.html"
+}
