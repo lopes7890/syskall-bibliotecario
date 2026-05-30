@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fatec Conecta — Gestão de Biblioteca</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --crimson: #9B1B1B;
+    --crimson-dark: #7a1515;
+    --crimson-light: #c0392b;
+    --rose-pale: #fdf0f0;
+    --rose-mid: #f5d5d5;
+    --rose-border: #e8bfbf;
+    --slate: #2d3748;
+    --slate-mid: #4a5568;
+    --slate-light: #718096;
+    --white: #ffffff;
+    --bg: #f7f4f4;
+    --card: #ffffff;
+    --success: #2e7d52;
+    --success-bg: #e8f5ee;
+    --warning: #b45309;
+    --warning-bg: #fef3c7;
+    --danger: #9B1B1B;
+    --danger-bg: #fde8e8;
+    --sidebar-w: 260px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--slate);
+    min-height: 100vh;
+    display: flex;
+  }
+
+  /* ─── SIDEBAR ─────────────────────────────── */
+  .sidebar {
+    width: var(--sidebar-w);
+    min-height: 100vh;
+    background: var(--slate);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    left: 0; top: 0; bottom: 0;
+    z-index: 100;
+    transition: transform .3s ease;
+  }
+
+  .sidebar-brand {
+    padding: 28px 24px 20px;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+  }
+  .sidebar-brand h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.35rem;
+    color: #fff;
+    font-weight: 700;
+    letter-spacing: -.3px;
+  }
+  .sidebar-brand p { font-size: .75rem; color: rgba(255,255,255,.45); margin-top: 3px; font-weight: 300; }
+
+  .sidebar-nav { flex: 1; padding: 16px 12px; display: flex; flex-direction: column; gap: 3px; }
+
+  .nav-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background .18s, color .18s;
+    color: rgba(255,255,255,.55);
+    font-size: .875rem;
+    font-weight: 500;
+    text-decoration: none;
+    border: none; background: transparent; width: 100%; text-align: left;
+  }
+  .nav-item svg { flex-shrink: 0; width: 18px; height: 18px; }
+  .nav-item:hover { background: rgba(255,255,255,.07); color: rgba(255,255,255,.85); }
+  .nav-item.active { background: var(--crimson); color: #fff; }
+  .nav-item.active svg { opacity: 1; }
+
+  .sidebar-footer {
+    padding: 16px 12px;
+    border-top: 1px solid rgba(255,255,255,.08);
+  }
+  .sidebar-footer .nav-item { color: rgba(255,255,255,.4); }
+  .sidebar-footer .nav-item:hover { color: rgba(255,255,255,.7); }
+
+  /* ─── MAIN ─────────────────────────────────── */
+  .main {
+    margin-left: var(--sidebar-w);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  /* ─── TOPBAR ───────────────────────────────── */
+  .topbar {
+    background: var(--crimson-dark);
+    height: 58px;
+    display: flex;
+    align-items: center;
+    padding: 0 28px;
+    gap: 12px;
+    position: sticky; top: 0; z-index: 50;
+  }
+  .topbar svg { color: rgba(255,255,255,.5); flex-shrink: 0; }
+  .topbar input {
+    flex: 1; background: transparent; border: none; outline: none;
+    color: #fff; font-family: 'DM Sans', sans-serif; font-size: .9rem;
+    placeholder-color: rgba(255,255,255,.4);
+  }
+  .topbar input::placeholder { color: rgba(255,255,255,.4); }
+
+  /* ─── PAGES ─────────────────────────────────── */
+  .page { display: none; padding: 32px 28px; animation: fadeIn .25s ease; }
+  .page.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+  .page-header { margin-bottom: 28px; }
+  .page-header h2 { font-family: 'Playfair Display', serif; font-size: 1.75rem; font-weight: 700; color: var(--slate); }
+  .page-header p { font-size: .875rem; color: var(--slate-light); margin-top: 4px; }
+
+  /* ─── STAT CARDS ────────────────────────────── */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .stat-card {
+    background: var(--card);
+    border-radius: 14px;
+    padding: 20px 22px;
+    border: 1px solid var(--rose-border);
+    position: relative;
+    overflow: hidden;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(155,27,27,.1); }
+  .stat-card.danger { background: var(--danger-bg); border-color: #f0b0b0; }
+
+  .stat-card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+  .stat-icon {
+    width: 42px; height: 42px; border-radius: 10px;
+    background: var(--rose-pale);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--crimson);
+  }
+  .stat-card.danger .stat-icon { background: #fbd5d5; }
+  .stat-badge {
+    font-size: .72rem; font-weight: 600; padding: 3px 9px;
+    border-radius: 20px; letter-spacing: .3px;
+  }
+  .badge-green { background: var(--success-bg); color: var(--success); }
+  .badge-blue { background: #dbeafe; color: #1d4ed8; }
+  .badge-purple { background: #ede9fe; color: #6d28d9; }
+  .badge-red { background: #fde8e8; color: var(--crimson); }
+
+  .stat-label { font-size: .8rem; color: var(--slate-light); font-weight: 400; margin-bottom: 4px; }
+  .stat-value { font-size: 2rem; font-weight: 700; color: var(--crimson); font-variant-numeric: tabular-nums; }
+  .stat-card.danger .stat-value { color: var(--crimson); }
+
+  /* ─── DASHBOARD BOTTOM ──────────────────────── */
+  .dash-bottom { display: grid; grid-template-columns: 1fr 340px; gap: 20px; }
+
+  .chart-card, .list-card {
+    background: var(--card);
+    border-radius: 14px;
+    border: 1px solid var(--rose-border);
+    padding: 24px;
+  }
+  .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+  .card-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; }
+  .card-subtitle { font-size: .78rem; color: var(--slate-light); margin-top: 2px; }
+
+  .filter-select {
+    border: 1px solid var(--rose-border); border-radius: 8px;
+    padding: 6px 12px; font-family: 'DM Sans', sans-serif;
+    font-size: .8rem; color: var(--slate); background: #fff;
+    cursor: pointer; outline: none;
+  }
+
+  /* Bar chart */
+  .bar-chart { display: flex; align-items: flex-end; gap: 10px; height: 160px; margin-top: 20px; }
+  .bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; height: 100%; justify-content: flex-end; }
+  .bar {
+    width: 100%; border-radius: 6px 6px 0 0;
+    background: var(--rose-mid);
+    transition: background .2s;
+    cursor: pointer;
+    position: relative;
+  }
+  .bar:hover { background: var(--crimson); }
+  .bar.highlight { background: var(--crimson); }
+  .bar-label { font-size: .72rem; color: var(--slate-light); }
+  .bar-val { font-size: .72rem; color: var(--slate-light); font-weight: 500; }
+
+  /* Most wanted list */
+  .book-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--rose-border); }
+  .book-item:last-child { border-bottom: none; }
+  .book-cover {
+    width: 36px; height: 48px; border-radius: 4px;
+    flex-shrink: 0; object-fit: cover;
+    background: var(--rose-mid);
+    display: flex; align-items: center; justify-content: center;
+    font-size: .6rem; color: var(--crimson-dark); font-weight: 700;
+    text-align: center; line-height: 1.1;
+  }
+  .book-info { flex: 1; }
+  .book-title { font-size: .85rem; font-weight: 600; color: var(--slate); }
+  .book-author { font-size: .75rem; color: var(--slate-light); }
+  .book-reservas { text-align: right; }
+  .book-reservas strong { display: block; font-size: .95rem; font-weight: 700; color: var(--crimson); }
+  .book-reservas span { font-size: .65rem; color: var(--slate-light); text-transform: uppercase; letter-spacing: .5px; }
+  .card-link { font-size: .8rem; color: var(--crimson); font-weight: 500; cursor: pointer; text-decoration: none; }
+  .card-link:hover { text-decoration: underline; }
+
+  /* ─── TABLE SECTION ─────────────────────────── */
+  .section-toolbar {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 18px; gap: 12px;
+  }
+  .search-box {
+    display: flex; align-items: center; gap: 8px;
+    background: #fff; border: 1px solid var(--rose-border);
+    border-radius: 9px; padding: 8px 14px;
+    flex: 1; max-width: 340px;
+  }
+  .search-box input {
+    border: none; outline: none; font-family: 'DM Sans', sans-serif;
+    font-size: .875rem; color: var(--slate); width: 100%;
+  }
+  .search-box svg { color: var(--slate-light); flex-shrink: 0; }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 9px 18px; border-radius: 9px; border: none;
+    font-family: 'DM Sans', sans-serif; font-size: .875rem;
+    font-weight: 600; cursor: pointer; transition: background .18s, transform .15s;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-primary { background: var(--crimson); color: #fff; }
+  .btn-primary:hover { background: var(--crimson-dark); }
+  .btn-outline { background: #fff; color: var(--crimson); border: 1.5px solid var(--crimson); }
+  .btn-outline:hover { background: var(--rose-pale); }
+  .btn-sm { padding: 5px 12px; font-size: .8rem; }
+  .btn-danger { background: var(--danger-bg); color: var(--crimson); }
+  .btn-danger:hover { background: #f0b0b0; }
+
+  .data-table { width: 100%; border-collapse: collapse; }
+  .data-table th {
+    text-align: left; padding: 11px 14px;
+    font-size: .75rem; font-weight: 600;
+    color: var(--slate-light); text-transform: uppercase;
+    letter-spacing: .6px;
+    border-bottom: 2px solid var(--rose-border);
+    background: var(--rose-pale);
+  }
+  .data-table td {
+    padding: 13px 14px;
+    font-size: .855rem;
+    border-bottom: 1px solid #f3e8e8;
+    vertical-align: middle;
+  }
+  .data-table tr:hover td { background: var(--rose-pale); }
+  .data-table tr:last-child td { border-bottom: none; }
+
+  .table-wrap {
+    background: var(--card);
+    border-radius: 14px;
+    border: 1px solid var(--rose-border);
+    overflow: hidden;
+  }
+
+  .tag {
+    display: inline-block; padding: 3px 10px;
+    border-radius: 20px; font-size: .75rem; font-weight: 500;
+  }
+  .tag-green { background: var(--success-bg); color: var(--success); }
+  .tag-red { background: var(--danger-bg); color: var(--crimson); }
+  .tag-yellow { background: var(--warning-bg); color: var(--warning); }
+  .tag-blue { background: #dbeafe; color: #1d4ed8; }
+  .tag-gray { background: #f3f4f6; color: #6b7280; }
+
+  .avatar {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--rose-mid);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: .75rem; font-weight: 700; color: var(--crimson);
+    flex-shrink: 0;
+  }
+  .td-user { display: flex; align-items: center; gap: 10px; }
+  .td-user small { display: block; font-size: .75rem; color: var(--slate-light); }
+
+  /* pagination */
+  .pagination {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 18px; border-top: 1px solid var(--rose-border);
+    font-size: .8rem; color: var(--slate-light);
+  }
+  .pag-btns { display: flex; gap: 4px; }
+  .pag-btn {
+    width: 30px; height: 30px; border-radius: 6px; border: 1px solid var(--rose-border);
+    background: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    font-size: .8rem; font-family: 'DM Sans', sans-serif; color: var(--slate);
+    transition: background .15s;
+  }
+  .pag-btn:hover { background: var(--rose-pale); }
+  .pag-btn.active { background: var(--crimson); color: #fff; border-color: var(--crimson); }
+
+  /* ─── MODAL ──────────────────────────────────── */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,.45);
+    z-index: 200; display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity .2s;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+  .modal {
+    background: #fff; border-radius: 18px; padding: 32px;
+    width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto;
+    transform: scale(.95); transition: transform .2s;
+    box-shadow: 0 20px 60px rgba(0,0,0,.25);
+  }
+  .modal-overlay.open .modal { transform: scale(1); }
+  .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+  .modal-title { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; }
+  .modal-close { background: none; border: none; cursor: pointer; color: var(--slate-light); padding: 4px; border-radius: 6px; }
+  .modal-close:hover { background: var(--rose-pale); color: var(--crimson); }
+
+  .form-group { margin-bottom: 18px; }
+  .form-label { display: block; font-size: .82rem; font-weight: 600; color: var(--slate); margin-bottom: 6px; }
+  .form-control {
+    width: 100%; padding: 10px 14px; border: 1.5px solid var(--rose-border);
+    border-radius: 9px; font-family: 'DM Sans', sans-serif; font-size: .875rem;
+    color: var(--slate); outline: none; transition: border-color .18s;
+    background: #fff;
+  }
+  .form-control:focus { border-color: var(--crimson); }
+  .form-control option { font-family: 'DM Sans', sans-serif; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 24px; }
+
+  /* ─── TOAST ──────────────────────────────────── */
+  .toast {
+    position: fixed; bottom: 28px; right: 28px;
+    background: var(--slate); color: #fff;
+    padding: 13px 20px; border-radius: 10px;
+    font-size: .875rem; font-weight: 500;
+    transform: translateY(10px); opacity: 0;
+    transition: all .25s; z-index: 999;
+    display: flex; align-items: center; gap: 10px;
+    box-shadow: 0 8px 24px rgba(0,0,0,.2);
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast.success { background: var(--success); }
+  .toast.error { background: var(--crimson); }
+
+  /* FAB */
+  .fab {
+    position: fixed; bottom: 28px; right: 28px;
+    width: 52px; height: 52px; border-radius: 50%;
+    background: var(--crimson); color: #fff;
+    border: none; cursor: pointer; font-size: 1.5rem;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 6px 20px rgba(155,27,27,.4);
+    transition: transform .2s, background .2s;
+    z-index: 90;
+  }
+  .fab:hover { transform: scale(1.08) rotate(45deg); background: var(--crimson-dark); }
+
+  /* empty state */
+  .empty { text-align: center; padding: 48px; color: var(--slate-light); }
+  .empty svg { opacity: .3; margin-bottom: 12px; }
+  .empty p { font-size: .9rem; }
+
+  /* tabs */
+  .tabs { display: flex; gap: 4px; margin-bottom: 20px; background: var(--rose-pale); border-radius: 10px; padding: 4px; width: fit-content; }
+  .tab-btn {
+    padding: 7px 18px; border-radius: 7px; border: none;
+    font-family: 'DM Sans', sans-serif; font-size: .845rem; font-weight: 500;
+    cursor: pointer; background: transparent; color: var(--slate-light);
+    transition: all .18s;
+  }
+  .tab-btn.active { background: #fff; color: var(--crimson); box-shadow: 0 2px 8px rgba(0,0,0,.08); font-weight: 600; }
+
+  /* alert */
+  .alert { padding: 12px 16px; border-radius: 10px; font-size: .855rem; margin-bottom: 20px; display: flex; gap: 10px; align-items: flex-start; }
+  .alert-warning { background: var(--warning-bg); color: var(--warning); border: 1px solid #fcd34d; }
+  .alert svg { flex-shrink: 0; margin-top: 1px; }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <h1>Fatec Conecta</h1>
+    <p>Gestão de Biblioteca</p>
+  </div>
+  <nav class="sidebar-nav">
+    <button class="nav-item active" onclick="navigate('dashboard')">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Dashboard
+    </button>
+    <button class="nav-item" onclick="navigate('livros')">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      Livros
+    </button>
+    <button class="nav-item" onclick="navigate('emprestimos')">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3m8 0h3a2 2 0 0 0 2-2v-3"/></svg>
+      Empréstimos
+    </button>
+    <button class="nav-item" onclick="navigate('alunos')">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Alunos
+    </button>
+    <button class="nav-item" onclick="navigate('relatorios')">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      Relatórios
+    </button>
+    <button class="nav-item" onclick="navigate('configuracoes')">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      Configurações
+    </button>
+  </nav>
+  <div class="sidebar-footer">
+    <button class="nav-item" onclick="showToast('Até logo!', 'success')">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      Sair
+    </button>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="text" id="globalSearch" placeholder="Buscar por matrícula, livro ou autor..." oninput="handleGlobalSearch(this.value)">
+  </div>
+
+  <!-- ═══ DASHBOARD ═══════════════════════════ -->
+  <div class="page active" id="page-dashboard">
+    <div class="page-header">
+      <h2>Visão Geral</h2>
+      <p>Bem-vindo de volta. Aqui está o que está acontecendo na biblioteca hoje.</p>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-card-top">
+          <div class="stat-icon">
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          </div>
+          <span class="stat-badge badge-green">+24 novos</span>
+        </div>
+        <div class="stat-label">Total de Livros</div>
+        <div class="stat-value" id="stat-total-livros">12.482</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-top">
+          <div class="stat-icon">
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3m8 0h3a2 2 0 0 0 2-2v-3"/></svg>
+          </div>
+          <span class="stat-badge badge-blue">85% em uso</span>
+        </div>
+        <div class="stat-label">Livros Emprestados</div>
+        <div class="stat-value" id="stat-emprestados">3.120</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-top">
+          <div class="stat-icon">
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+          </div>
+          <span class="stat-badge badge-purple">Ativos</span>
+        </div>
+        <div class="stat-label">Alunos Ativos</div>
+        <div class="stat-value" id="stat-alunos">845</div>
+      </div>
+      <div class="stat-card danger">
+        <div class="stat-card-top">
+          <div class="stat-icon">
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
+          <span class="stat-badge badge-red">Ação Requerida</span>
+        </div>
+        <div class="stat-label">Empréstimos Atrasados</div>
+        <div class="stat-value" id="stat-atrasados">42</div>
+      </div>
+    </div>
+
+    <div class="dash-bottom">
+      <div class="chart-card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Frequência de Empréstimos</div>
+            <div class="card-subtitle">Comparativo de movimentação mensal do acervo</div>
+          </div>
+          <select class="filter-select" onchange="updateChart(this.value)">
+            <option value="6">Últimos 6 meses</option>
+            <option value="12">Últimos 12 meses</option>
+            <option value="3">Últimos 3 meses</option>
+          </select>
+        </div>
+        <div class="bar-chart" id="barChart"></div>
+      </div>
+
+      <div class="list-card">
+        <div class="card-header">
+          <div class="card-title">Mais Procurados</div>
+          <a class="card-link" onclick="navigate('livros')">Ver todos</a>
+        </div>
+        <div id="topBooks">
+          <div class="book-item">
+            <div class="book-cover" style="background:#c0392b;color:#fff;">ALG</div>
+            <div class="book-info">
+              <div class="book-title">Algoritmos Modernos</div>
+              <div class="book-author">Thomas H. Cormen</div>
+            </div>
+            <div class="book-reservas"><strong>124</strong><span>reservas</span></div>
+          </div>
+          <div class="book-item">
+            <div class="book-cover" style="background:#8B4513;color:#fff;">ENG</div>
+            <div class="book-info">
+              <div class="book-title">Engenharia de Software</div>
+              <div class="book-author">Ian Sommerville</div>
+            </div>
+            <div class="book-reservas"><strong>98</strong><span>reservas</span></div>
+          </div>
+          <div class="book-item">
+            <div class="book-cover" style="background:#2d4a7a;color:#fff;">CLN</div>
+            <div class="book-info">
+              <div class="book-title">Clean Code</div>
+              <div class="book-author">Robert C. Martin</div>
+            </div>
+            <div class="book-reservas"><strong>87</strong><span>reservas</span></div>
+          </div>
+          <div class="book-item">
+            <div class="book-cover" style="background:#4a2d7a;color:#fff;">PAD</div>
+            <div class="book-info">
+              <div class="book-title">Design Patterns</div>
+              <div class="book-author">Gang of Four</div>
+            </div>
+            <div class="book-reservas"><strong>76</strong><span>reservas</span></div>
+          </div>
+          <div class="book-item">
+            <div class="book-cover" style="background:#2d7a4a;color:#fff;">BD</div>
+            <div class="book-info">
+              <div class="book-title">Banco de Dados</div>
+              <div class="book-author">Abraham Silberschatz</div>
+            </div>
+            <div class="book-reservas"><strong>65</strong><span>reservas</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ LIVROS ════════════════════════════════ -->
+  <div class="page" id="page-livros">
+    <div class="page-header">
+      <h2>Acervo de Livros</h2>
+      <p>Gerencie todos os títulos disponíveis na biblioteca.</p>
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab(this,'todos')">Todos</button>
+      <button class="tab-btn" onclick="switchTab(this,'disponiveis')">Disponíveis</button>
+      <button class="tab-btn" onclick="switchTab(this,'emprestados')">Emprestados</button>
+    </div>
+
+    <div class="section-toolbar">
+      <div class="search-box">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" placeholder="Buscar por título, autor ou ISBN..." oninput="filterLivros(this.value)">
+      </div>
+      <div style="display:flex;gap:8px;">
+        <select class="filter-select" onchange="filterLivrosCat(this.value)">
+          <option value="">Todas as categorias</option>
+          <option>Tecnologia</option>
+          <option>Engenharia</option>
+          <option>Matemática</option>
+          <option>Ciências</option>
+        </select>
+        <button class="btn btn-primary" onclick="openModal('modal-livro')">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Novo Livro
+        </button>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table class="data-table" id="livrosTable">
+        <thead>
+          <tr>
+            <th>Livro</th>
+            <th>Autor</th>
+            <th>ISBN</th>
+            <th>Categoria</th>
+            <th>Exemplares</th>
+            <th>Status</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="livrosTbody"></tbody>
+      </table>
+      <div class="pagination">
+        <span id="livrosPagInfo"></span>
+        <div class="pag-btns" id="livrosPag"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ EMPRESTIMOS ═══════════════════════════ -->
+  <div class="page" id="page-emprestimos">
+    <div class="page-header">
+      <h2>Empréstimos</h2>
+      <p>Controle de retiradas, devoluções e atrasos.</p>
+    </div>
+
+    <div class="alert alert-warning">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <span><strong>42 empréstimos em atraso.</strong> Notificações automáticas foram enviadas aos alunos.</span>
+    </div>
+
+    <div class="section-toolbar">
+      <div class="search-box">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" placeholder="Buscar aluno ou livro..." oninput="filterEmprestimos(this.value)">
+      </div>
+      <div style="display:flex;gap:8px;">
+        <select class="filter-select" onchange="filterEmprestimoStatus(this.value)">
+          <option value="">Todos os status</option>
+          <option value="ativo">Ativo</option>
+          <option value="atrasado">Atrasado</option>
+          <option value="devolvido">Devolvido</option>
+        </select>
+        <button class="btn btn-primary" onclick="openModal('modal-emprestimo')">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Novo Empréstimo
+        </button>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Aluno</th>
+            <th>Livro</th>
+            <th>Retirada</th>
+            <th>Devolução prevista</th>
+            <th>Status</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="emprestimosTbody"></tbody>
+      </table>
+      <div class="pagination">
+        <span id="emprestimosPagInfo"></span>
+        <div class="pag-btns" id="emprestimosPag"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ ALUNOS ════════════════════════════════ -->
+  <div class="page" id="page-alunos">
+    <div class="page-header">
+      <h2>Alunos</h2>
+      <p>Gerencie os alunos cadastrados na biblioteca.</p>
+    </div>
+
+    <div class="section-toolbar">
+      <div class="search-box">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" placeholder="Buscar por nome ou matrícula..." oninput="filterAlunos(this.value)">
+      </div>
+      <button class="btn btn-primary" onclick="openModal('modal-aluno')">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Novo Aluno
+      </button>
+    </div>
+
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Aluno</th>
+            <th>Matrícula</th>
+            <th>Curso</th>
+            <th>Empréstimos ativos</th>
+            <th>Status</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="alunosTbody"></tbody>
+      </table>
+      <div class="pagination">
+        <span id="alunosPagInfo"></span>
+        <div class="pag-btns" id="alunosPag"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ RELATÓRIOS ════════════════════════════ -->
+  <div class="page" id="page-relatorios">
+    <div class="page-header">
+      <h2>Relatórios</h2>
+      <p>Análises e exportações do acervo.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+      <div class="stat-card" style="cursor:pointer;" onclick="showToast('Relatório gerado!','success')">
+        <div class="stat-icon" style="margin-bottom:14px;"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+        <div class="stat-label">Movimentação Mensal</div>
+        <div style="font-size:.82rem;color:var(--slate-light);margin-top:6px;">Empréstimos e devoluções do mês</div>
+        <div style="margin-top:14px;"><span class="tag tag-blue">Exportar PDF</span></div>
+      </div>
+      <div class="stat-card" style="cursor:pointer;" onclick="showToast('Relatório gerado!','success')">
+        <div class="stat-icon" style="margin-bottom:14px;"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/></svg></div>
+        <div class="stat-label">Atrasos e Multas</div>
+        <div style="font-size:.82rem;color:var(--slate-light);margin-top:6px;">Lista de empréstimos vencidos</div>
+        <div style="margin-top:14px;"><span class="tag tag-red">Ação necessária</span></div>
+      </div>
+      <div class="stat-card" style="cursor:pointer;" onclick="showToast('Relatório gerado!','success')">
+        <div class="stat-icon" style="margin-bottom:14px;"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+        <div class="stat-label">Inventário do Acervo</div>
+        <div style="font-size:.82rem;color:var(--slate-light);margin-top:6px;">Todos os livros e exemplares</div>
+        <div style="margin-top:14px;"><span class="tag tag-green">Exportar Excel</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ CONFIGURAÇÕES ══════════════════════════ -->
+  <div class="page" id="page-configuracoes">
+    <div class="page-header">
+      <h2>Configurações</h2>
+      <p>Ajuste as preferências do sistema.</p>
+    </div>
+    <div class="chart-card" style="max-width:540px;">
+      <div class="card-title" style="margin-bottom:20px;">Informações da Biblioteca</div>
+      <div class="form-group"><label class="form-label">Nome da Instituição</label><input class="form-control" value="Fatec — Gestão de Biblioteca"></div>
+      <div class="form-group"><label class="form-label">Prazo padrão de empréstimo (dias)</label><input class="form-control" type="number" value="14"></div>
+      <div class="form-group"><label class="form-label">Multa por dia de atraso (R$)</label><input class="form-control" type="number" value="0.50" step="0.10"></div>
+      <div class="form-group"><label class="form-label">Limite de livros por aluno</label><input class="form-control" type="number" value="3"></div>
+      <button class="btn btn-primary" onclick="showToast('Configurações salvas!','success')">Salvar alterações</button>
+    </div>
+  </div>
+</main>
+
+<!-- ═══ MODAIS ════════════════════════════════════ -->
+
+<!-- Modal Livro -->
+<div class="modal-overlay" id="modal-livro">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="livroModalTitle">Novo Livro</div>
+      <button class="modal-close" onclick="closeModal('modal-livro')">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <input type="hidden" id="livroEditIndex" value="">
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Título *</label><input class="form-control" id="livroTitulo" placeholder="Título do livro"></div>
+      <div class="form-group"><label class="form-label">Autor *</label><input class="form-control" id="livroAutor" placeholder="Nome do autor"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">ISBN</label><input class="form-control" id="livroISBN" placeholder="978-x-xxx-xxxxx-x"></div>
+      <div class="form-group"><label class="form-label">Categoria</label>
+        <select class="form-control" id="livroCat">
+          <option>Tecnologia</option><option>Engenharia</option><option>Matemática</option><option>Ciências</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Nº de Exemplares</label><input class="form-control" id="livroExemplares" type="number" value="1" min="1"></div>
+      <div class="form-group"><label class="form-label">Ano de Publicação</label><input class="form-control" id="livroAno" type="number" placeholder="2024"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-livro')">Cancelar</button>
+      <button class="btn btn-primary" onclick="salvarLivro()">Salvar Livro</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Aluno -->
+<div class="modal-overlay" id="modal-aluno">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="alunoModalTitle">Novo Aluno</div>
+      <button class="modal-close" onclick="closeModal('modal-aluno')">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <input type="hidden" id="alunoEditIndex" value="">
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Nome completo *</label><input class="form-control" id="alunoNome" placeholder="Nome do aluno"></div>
+      <div class="form-group"><label class="form-label">Matrícula *</label><input class="form-control" id="alunoMatricula" placeholder="2024001234"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Curso</label>
+        <select class="form-control" id="alunoCurso">
+          <option>Análise e Desenvolvimento de Sistemas</option>
+          <option>Gestão da Tecnologia da Informação</option>
+          <option>Engenharia de Software</option>
+          <option>Redes de Computadores</option>
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">E-mail</label><input class="form-control" id="alunoEmail" type="email" placeholder="aluno@fatec.sp.gov.br"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-aluno')">Cancelar</button>
+      <button class="btn btn-primary" onclick="salvarAluno()">Salvar Aluno</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Empréstimo -->
+<div class="modal-overlay" id="modal-emprestimo">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Novo Empréstimo</div>
+      <button class="modal-close" onclick="closeModal('modal-emprestimo')">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="form-group"><label class="form-label">Aluno *</label>
+      <select class="form-control" id="empAlunoSelect"></select>
+    </div>
+    <div class="form-group"><label class="form-label">Livro *</label>
+      <select class="form-control" id="empLivroSelect"></select>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Data de retirada</label><input class="form-control" id="empDataRetirada" type="date"></div>
+      <div class="form-group"><label class="form-label">Devolução prevista</label><input class="form-control" id="empDataDevolucao" type="date"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-emprestimo')">Cancelar</button>
+      <button class="btn btn-primary" onclick="salvarEmprestimo()">Registrar Empréstimo</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+  <span id="toastMsg"></span>
+</div>
+
+<script>
+// ═══ DATA ═══════════════════════════════════════════════════
+let livros = [
+  { titulo:'Algoritmos Modernos', autor:'Thomas H. Cormen', isbn:'978-0-262-046305', cat:'Tecnologia', exemplares:5, disponiveis:2, ano:2022 },
+  { titulo:'Engenharia de Software', autor:'Ian Sommerville', isbn:'978-0-13-394303-0', cat:'Engenharia', exemplares:4, disponiveis:1, ano:2018 },
+  { titulo:'Clean Code', autor:'Robert C. Martin', isbn:'978-0-13-235088-4', cat:'Tecnologia', exemplares:3, disponiveis:3, ano:2008 },
+  { titulo:'Design Patterns', autor:'Gang of Four', isbn:'978-0-20-163361-5', cat:'Tecnologia', exemplares:2, disponiveis:0, ano:1994 },
+  { titulo:'Banco de Dados', autor:'Abraham Silberschatz', isbn:'978-0-07-352332-3', cat:'Tecnologia', exemplares:6, disponiveis:4, ano:2019 },
+  { titulo:'Cálculo Vol. 1', autor:'James Stewart', isbn:'978-0-53-849781-7', cat:'Matemática', exemplares:8, disponiveis:5, ano:2015 },
+  { titulo:'Física para Ciências e Engenharia', autor:'Serway & Jewett', isbn:'978-0-84-004048-0', cat:'Ciências', exemplares:3, disponiveis:2, ano:2013 },
+  { titulo:'Estrutura de Dados', autor:'Mark Allen Weiss', isbn:'978-0-13-284737-7', cat:'Tecnologia', exemplares:4, disponiveis:1, ano:2011 },
+  { titulo:'Redes de Computadores', autor:'Andrew S. Tanenbaum', isbn:'978-0-13-212695-3', cat:'Tecnologia', exemplares:5, disponiveis:3, ano:2010 },
+  { titulo:'Sistemas Operacionais', autor:'William Stallings', isbn:'978-0-13-380591-2', cat:'Tecnologia', exemplares:3, disponiveis:0, ano:2017 },
+];
+
+let alunos = [
+  { nome:'Ana Luiza Pereira', matricula:'20240001', curso:'Análise e Desenvolvimento de Sistemas', email:'ana.pereira@fatec.sp.gov.br', emprestimosAtivos:2, status:'ativo' },
+  { nome:'Carlos Eduardo Silva', matricula:'20240002', curso:'Gestão da Tecnologia da Informação', email:'carlos.silva@fatec.sp.gov.br', emprestimosAtivos:0, status:'ativo' },
+  { nome:'Beatriz Santos', matricula:'20230045', curso:'Engenharia de Software', email:'beatriz.santos@fatec.sp.gov.br', emprestimosAtivos:1, status:'bloqueado' },
+  { nome:'Rafael Mendes', matricula:'20240089', curso:'Redes de Computadores', email:'rafael.mendes@fatec.sp.gov.br', emprestimosAtivos:3, status:'ativo' },
+  { nome:'Fernanda Costa', matricula:'20220012', curso:'Análise e Desenvolvimento de Sistemas', email:'fernanda.costa@fatec.sp.gov.br', emprestimosAtivos:0, status:'ativo' },
+  { nome:'Gustavo Almeida', matricula:'20240123', curso:'Gestão da Tecnologia da Informação', email:'gustavo.almeida@fatec.sp.gov.br', emprestimosAtivos:1, status:'ativo' },
+];
+
+let emprestimos = [
+  { aluno:'Ana Luiza Pereira', livro:'Algoritmos Modernos', retirada:'2025-05-01', devolucao:'2025-05-15', status:'atrasado' },
+  { aluno:'Carlos Eduardo Silva', livro:'Clean Code', retirada:'2025-05-10', devolucao:'2025-05-24', status:'ativo' },
+  { aluno:'Rafael Mendes', livro:'Design Patterns', retirada:'2025-04-28', devolucao:'2025-05-12', status:'atrasado' },
+  { aluno:'Fernanda Costa', livro:'Banco de Dados', retirada:'2025-05-15', devolucao:'2025-05-29', status:'devolvido' },
+  { aluno:'Gustavo Almeida', livro:'Estrutura de Dados', retirada:'2025-05-18', devolucao:'2025-06-01', status:'ativo' },
+  { aluno:'Beatriz Santos', livro:'Sistemas Operacionais', retirada:'2025-04-10', devolucao:'2025-04-24', status:'atrasado' },
+];
+
+const chartData = {
+  '3': [{ m:'Mar', v:180 }, { m:'Abr', v:220 }, { m:'Mai', v:310 }],
+  '6': [{ m:'Dez', v:120 }, { m:'Jan', v:185 }, { m:'Fev', v:210 }, { m:'Mar', v:180 }, { m:'Abr', v:220 }, { m:'Mai', v:310 }],
+  '12': [{ m:'Jun', v:90 }, { m:'Jul', v:110 }, { m:'Ago', v:130 }, { m:'Set', v:160 }, { m:'Out', v:140 }, { m:'Nov', v:170 }, { m:'Dez', v:120 }, { m:'Jan', v:185 }, { m:'Fev', v:210 }, { m:'Mar', v:180 }, { m:'Abr', v:220 }, { m:'Mai', v:310 }],
+};
+
+// ═══ NAVIGATION ═════════════════════════════════════════════
+function navigate(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => { if (n.getAttribute('onclick')?.includes("'" + page + "'")) n.classList.add('active'); });
+  if (page === 'dashboard') updateChart('6');
+}
+
+// ═══ CHART ══════════════════════════════════════════════════
+function updateChart(months) {
+  const data = chartData[months] || chartData['6'];
+  const max = Math.max(...data.map(d => d.v));
+  const el = document.getElementById('barChart');
+  el.innerHTML = data.map((d, i) => {
+    const h = Math.round((d.v / max) * 140);
+    const isLast = i === data.length - 1;
+    return `<div class="bar-wrap">
+      <span class="bar-val">${d.v}</span>
+      <div class="bar ${isLast ? 'highlight' : ''}" style="height:${h}px"></div>
+      <span class="bar-label">${d.m}</span>
+    </div>`;
+  }).join('');
+}
+
+// ═══ LIVROS TABLE ════════════════════════════════════════════
+let livrosFiltered = [...livros];
+let livroPage = 1;
+const livroPerPage = 6;
+let livroTab = 'todos';
+
+function renderLivros() {
+  const start = (livroPage - 1) * livroPerPage;
+  const slice = livrosFiltered.slice(start, start + livroPerPage);
+  const tbody = document.getElementById('livrosTbody');
+  tbody.innerHTML = slice.map((l, i) => {
+    const realIdx = livros.indexOf(l);
+    const disp = l.disponiveis;
+    const status = l.disponiveis === 0 ? '<span class="tag tag-red">Indisponível</span>'
+      : l.disponiveis < l.exemplares ? '<span class="tag tag-yellow">Parcial</span>'
+      : '<span class="tag tag-green">Disponível</span>';
+    return `<tr>
+      <td><strong>${l.titulo}</strong></td>
+      <td>${l.autor}</td>
+      <td><code style="font-size:.78rem;color:var(--slate-light)">${l.isbn}</code></td>
+      <td><span class="tag tag-gray">${l.cat}</span></td>
+      <td>${l.disponiveis}/${l.exemplares}</td>
+      <td>${status}</td>
+      <td style="display:flex;gap:6px;">
+        <button class="btn btn-sm btn-outline" onclick="editLivro(${realIdx})">Editar</button>
+        <button class="btn btn-sm btn-danger" onclick="deleteLivro(${realIdx})">Remover</button>
+      </td>
+    </tr>`;
+  }).join('') || `<tr><td colspan="7"><div class="empty"><svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><p>Nenhum livro encontrado.</p></div></td></tr>`;
+
+  const total = livrosFiltered.length;
+  document.getElementById('livrosPagInfo').textContent = `${Math.min(start+1, total)}–${Math.min(start+livroPerPage, total)} de ${total} livros`;
+  renderPag('livrosPag', Math.ceil(total / livroPerPage), livroPage, (p) => { livroPage = p; renderLivros(); });
+}
+
+function filterLivros(q) {
+  q = q.toLowerCase();
+  livrosFiltered = livros.filter(l => l.titulo.toLowerCase().includes(q) || l.autor.toLowerCase().includes(q) || l.isbn.includes(q));
+  applyTabFilter();
+  livroPage = 1; renderLivros();
+}
+function filterLivrosCat(cat) {
+  livrosFiltered = cat ? livros.filter(l => l.cat === cat) : [...livros];
+  applyTabFilter(); livroPage = 1; renderLivros();
+}
+function applyTabFilter() {
+  if (livroTab === 'disponiveis') livrosFiltered = livrosFiltered.filter(l => l.disponiveis > 0);
+  else if (livroTab === 'emprestados') livrosFiltered = livrosFiltered.filter(l => l.disponiveis < l.exemplares);
+}
+function switchTab(btn, tab) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  livroTab = tab;
+  livrosFiltered = [...livros];
+  applyTabFilter(); livroPage = 1; renderLivros();
+}
+
+function editLivro(idx) {
+  const l = livros[idx];
+  document.getElementById('livroModalTitle').textContent = 'Editar Livro';
+  document.getElementById('livroEditIndex').value = idx;
+  document.getElementById('livroTitulo').value = l.titulo;
+  document.getElementById('livroAutor').value = l.autor;
+  document.getElementById('livroISBN').value = l.isbn;
+  document.getElementById('livroCat').value = l.cat;
+  document.getElementById('livroExemplares').value = l.exemplares;
+  document.getElementById('livroAno').value = l.ano;
+  openModal('modal-livro');
+}
+function deleteLivro(idx) {
+  if (confirm('Remover este livro do acervo?')) {
+    livros.splice(idx, 1); livrosFiltered = [...livros]; renderLivros();
+    showToast('Livro removido.', 'error');
+  }
+}
+function salvarLivro() {
+  const titulo = document.getElementById('livroTitulo').value.trim();
+  const autor = document.getElementById('livroAutor').value.trim();
+  if (!titulo || !autor) { showToast('Preencha título e autor.', 'error'); return; }
+  const idx = document.getElementById('livroEditIndex').value;
+  const obj = {
+    titulo, autor,
+    isbn: document.getElementById('livroISBN').value,
+    cat: document.getElementById('livroCat').value,
+    exemplares: parseInt(document.getElementById('livroExemplares').value) || 1,
+    disponiveis: parseInt(document.getElementById('livroExemplares').value) || 1,
+    ano: parseInt(document.getElementById('livroAno').value) || new Date().getFullYear(),
+  };
+  if (idx !== '') livros[idx] = { ...livros[idx], ...obj };
+  else livros.unshift(obj);
+  livrosFiltered = [...livros]; renderLivros();
+  closeModal('modal-livro'); showToast('Livro salvo com sucesso!', 'success');
+  document.getElementById('livroEditIndex').value = '';
+  document.getElementById('livroModalTitle').textContent = 'Novo Livro';
+  ['livroTitulo','livroAutor','livroISBN','livroAno'].forEach(id => document.getElementById(id).value = '');
+}
+
+// ═══ ALUNOS TABLE ════════════════════════════════════════════
+let alunosFiltered = [...alunos];
+let alunoPage = 1;
+const alunoPerPage = 6;
+
+function renderAlunos() {
+  const start = (alunoPage - 1) * alunoPerPage;
+  const slice = alunosFiltered.slice(start, start + alunoPerPage);
+  document.getElementById('alunosTbody').innerHTML = slice.map((a, i) => {
+    const realIdx = alunos.indexOf(a);
+    const initials = a.nome.split(' ').slice(0,2).map(w => w[0]).join('');
+    const stag = a.status === 'ativo' ? '<span class="tag tag-green">Ativo</span>' : '<span class="tag tag-red">Bloqueado</span>';
+    return `<tr>
+      <td><div class="td-user"><div class="avatar">${initials}</div><div><span>${a.nome}</span><small>${a.email}</small></div></div></td>
+      <td>${a.matricula}</td>
+      <td>${a.curso}</td>
+      <td>${a.emprestimosAtivos}</td>
+      <td>${stag}</td>
+      <td style="display:flex;gap:6px;">
+        <button class="btn btn-sm btn-outline" onclick="editAluno(${realIdx})">Editar</button>
+        <button class="btn btn-sm btn-danger" onclick="deleteAluno(${realIdx})">Remover</button>
+      </td>
+    </tr>`;
+  }).join('') || `<tr><td colspan="6"><div class="empty"><p>Nenhum aluno encontrado.</p></div></td></tr>`;
+
+  const total = alunosFiltered.length;
+  document.getElementById('alunosPagInfo').textContent = `${Math.min(start+1, total)}–${Math.min(start+alunoPerPage, total)} de ${total} alunos`;
+  renderPag('alunosPag', Math.ceil(total / alunoPerPage), alunoPage, (p) => { alunoPage = p; renderAlunos(); });
+}
+function filterAlunos(q) {
+  q = q.toLowerCase();
+  alunosFiltered = alunos.filter(a => a.nome.toLowerCase().includes(q) || a.matricula.includes(q));
+  alunoPage = 1; renderAlunos();
+}
+function editAluno(idx) {
+  const a = alunos[idx];
+  document.getElementById('alunoModalTitle').textContent = 'Editar Aluno';
+  document.getElementById('alunoEditIndex').value = idx;
+  document.getElementById('alunoNome').value = a.nome;
+  document.getElementById('alunoMatricula').value = a.matricula;
+  document.getElementById('alunoCurso').value = a.curso;
+  document.getElementById('alunoEmail').value = a.email;
+  openModal('modal-aluno');
+}
+function deleteAluno(idx) {
+  if (confirm('Remover este aluno?')) {
+    alunos.splice(idx, 1); alunosFiltered = [...alunos]; renderAlunos();
+    showToast('Aluno removido.', 'error');
+  }
+}
+function salvarAluno() {
+  const nome = document.getElementById('alunoNome').value.trim();
+  const mat = document.getElementById('alunoMatricula').value.trim();
+  if (!nome || !mat) { showToast('Preencha nome e matrícula.', 'error'); return; }
+  const idx = document.getElementById('alunoEditIndex').value;
+  const obj = { nome, matricula: mat, curso: document.getElementById('alunoCurso').value, email: document.getElementById('alunoEmail').value, emprestimosAtivos: 0, status: 'ativo' };
+  if (idx !== '') alunos[idx] = { ...alunos[idx], ...obj };
+  else alunos.unshift(obj);
+  alunosFiltered = [...alunos]; renderAlunos();
+  closeModal('modal-aluno'); showToast('Aluno salvo com sucesso!', 'success');
+  document.getElementById('alunoEditIndex').value = '';
+  document.getElementById('alunoModalTitle').textContent = 'Novo Aluno';
+  ['alunoNome','alunoMatricula','alunoEmail'].forEach(id => document.getElementById(id).value = '');
+}
+
+// ═══ EMPRESTIMOS TABLE ═══════════════════════════════════════
+let empFiltered = [...emprestimos];
+let empPage = 1;
+const empPerPage = 6;
+
+function renderEmprestimos() {
+  const start = (empPage - 1) * empPerPage;
+  const slice = empFiltered.slice(start, start + empPerPage);
+  document.getElementById('emprestimosTbody').innerHTML = slice.map((e, i) => {
+    const realIdx = emprestimos.indexOf(e);
+    const stag = e.status === 'atrasado' ? '<span class="tag tag-red">Atrasado</span>'
+      : e.status === 'devolvido' ? '<span class="tag tag-green">Devolvido</span>'
+      : '<span class="tag tag-blue">Ativo</span>';
+    const devBtn = e.status !== 'devolvido' ? `<button class="btn btn-sm btn-outline" onclick="devolver(${realIdx})">Devolver</button>` : '';
+    return `<tr>
+      <td>${e.aluno}</td>
+      <td>${e.livro}</td>
+      <td>${formatDate(e.retirada)}</td>
+      <td>${formatDate(e.devolucao)}</td>
+      <td>${stag}</td>
+      <td style="display:flex;gap:6px;">${devBtn}<button class="btn btn-sm btn-danger" onclick="deleteEmp(${realIdx})">Remover</button></td>
+    </tr>`;
+  }).join('') || `<tr><td colspan="6"><div class="empty"><p>Nenhum empréstimo encontrado.</p></div></td></tr>`;
+
+  const total = empFiltered.length;
+  document.getElementById('emprestimosPagInfo').textContent = `${Math.min(start+1, total)}–${Math.min(start+empPerPage, total)} de ${total} registros`;
+  renderPag('emprestimosPag', Math.ceil(total / empPerPage), empPage, (p) => { empPage = p; renderEmprestimos(); });
+}
+function filterEmprestimos(q) {
+  q = q.toLowerCase();
+  empFiltered = emprestimos.filter(e => e.aluno.toLowerCase().includes(q) || e.livro.toLowerCase().includes(q));
+  empPage = 1; renderEmprestimos();
+}
+function filterEmprestimoStatus(s) {
+  empFiltered = s ? emprestimos.filter(e => e.status === s) : [...emprestimos];
+  empPage = 1; renderEmprestimos();
+}
+function devolver(idx) {
+  emprestimos[idx].status = 'devolvido';
+  empFiltered = [...emprestimos]; renderEmprestimos();
+  showToast('Devolução registrada!', 'success');
+}
+function deleteEmp(idx) {
+  emprestimos.splice(idx, 1); empFiltered = [...emprestimos]; renderEmprestimos();
+  showToast('Empréstimo removido.', 'error');
+}
+function salvarEmprestimo() {
+  const aluno = document.getElementById('empAlunoSelect').value;
+  const livro = document.getElementById('empLivroSelect').value;
+  const ret = document.getElementById('empDataRetirada').value;
+  const dev = document.getElementById('empDataDevolucao').value;
+  if (!aluno || !livro || !ret || !dev) { showToast('Preencha todos os campos.', 'error'); return; }
+  emprestimos.unshift({ aluno, livro, retirada: ret, devolucao: dev, status: 'ativo' });
+  empFiltered = [...emprestimos]; renderEmprestimos();
+  closeModal('modal-emprestimo'); showToast('Empréstimo registrado!', 'success');
+}
+
+// ═══ HELPERS ═════════════════════════════════════════════════
+function formatDate(d) {
+  const [y, m, day] = d.split('-');
+  return `${day}/${m}/${y}`;
+}
+function renderPag(containerId, total, current, cb) {
+  const el = document.getElementById(containerId);
+  if (total <= 1) { el.innerHTML = ''; return; }
+  let html = '';
+  for (let i = 1; i <= total; i++) {
+    html += `<button class="pag-btn ${i === current ? 'active' : ''}" onclick="(${cb})(${i})">${i}</button>`;
+  }
+  el.innerHTML = html;
+}
+function openModal(id) {
+  if (id === 'modal-emprestimo') {
+    document.getElementById('empAlunoSelect').innerHTML = alunos.map(a => `<option>${a.nome}</option>`).join('');
+    document.getElementById('empLivroSelect').innerHTML = livros.filter(l => l.disponiveis > 0).map(l => `<option>${l.titulo}</option>`).join('');
+    const today = new Date().toISOString().split('T')[0];
+    const future = new Date(Date.now() + 14*86400000).toISOString().split('T')[0];
+    document.getElementById('empDataRetirada').value = today;
+    document.getElementById('empDataDevolucao').value = future;
+  }
+  document.getElementById(id).classList.add('open');
+}
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+let toastTimer;
+function showToast(msg, type = '') {
+  const t = document.getElementById('toast');
+  t.className = 'toast ' + type;
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function handleGlobalSearch(q) {
+  if (!q) return;
+  // smart navigate
+  const inLivros = livros.some(l => l.titulo.toLowerCase().includes(q.toLowerCase()) || l.autor.toLowerCase().includes(q.toLowerCase()));
+  const inAlunos = alunos.some(a => a.nome.toLowerCase().includes(q.toLowerCase()) || a.matricula.includes(q));
+  if (inAlunos) { navigate('alunos'); filterAlunos(q); }
+  else if (inLivros) { navigate('livros'); filterLivros(q); }
+}
+
+// click outside modal
+document.querySelectorAll('.modal-overlay').forEach(o => {
+  o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); });
+});
+
+// ═══ INIT ═════════════════════════════════════════════════════
+updateChart('6');
+renderLivros();
+renderAlunos();
+renderEmprestimos();
+</script>
+</body>
+</html>
