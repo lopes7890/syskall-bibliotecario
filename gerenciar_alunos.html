@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Fatec Conecta - Gestão de Alunos</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-variant": "#fadcd8",
+                    "surface-container": "#ffe9e6",
+                    "surface-container-low": "#fff0ee",
+                    "error-container": "#ffdad6",
+                    "on-background": "#271816",
+                    "surface-container-lowest": "#ffffff",
+                    "outline": "#906f6c",
+                    "secondary-container": "#c8e4f4",
+                    "outline-variant": "#e4beb9",
+                    "on-secondary-fixed": "#011e2a",
+                    "surface-bright": "#fff8f7",
+                    "primary-fixed": "#ffdad6",
+                    "surface-tint": "#ba1a1b",
+                    "secondary-fixed-dim": "#afcbda",
+                    "surface": "#fff8f7",
+                    "on-secondary-container": "#4c6674",
+                    "primary-fixed-dim": "#ffb4ab",
+                    "on-tertiary": "#ffffff",
+                    "on-tertiary-fixed": "#001b3d",
+                    "primary": "#880009",
+                    "on-primary-container": "#ffc0b9",
+                    "on-tertiary-fixed-variant": "#00468b",
+                    "primary-container": "#b11116",
+                    "surface-container-highest": "#fadcd8",
+                    "on-primary": "#ffffff",
+                    "inverse-surface": "#3e2c2a",
+                    "on-primary-fixed-variant": "#93000b",
+                    "on-tertiary-container": "#b7d0ff",
+                    "background": "#fff8f7",
+                    "secondary-fixed": "#cbe7f6",
+                    "on-secondary-fixed-variant": "#304a57",
+                    "surface-container-high": "#ffe2de",
+                    "on-surface-variant": "#5b403d",
+                    "on-primary-fixed": "#410002",
+                    "inverse-on-surface": "#ffedea",
+                    "on-error-container": "#93000a",
+                    "tertiary": "#004081",
+                    "on-surface": "#271816",
+                    "secondary": "#48626f",
+                    "inverse-primary": "#ffb4ab",
+                    "error": "#ba1a1a",
+                    "on-secondary": "#ffffff",
+                    "on-error": "#ffffff",
+                    "surface-dim": "#f1d3d0",
+                    "tertiary-container": "#0057ab",
+                    "tertiary-fixed": "#d6e3ff",
+                    "tertiary-fixed-dim": "#a9c7ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xl": "32px",
+                    "gutter": "16px",
+                    "lg": "24px",
+                    "sm": "8px",
+                    "unit": "4px",
+                    "md": "16px",
+                    "xs": "4px",
+                    "container-margin": "24px",
+                    "xxl": "48px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Hanken Grotesk"],
+                    "headline-lg": ["Hanken Grotesk"],
+                    "body-lg": ["Hanken Grotesk"],
+                    "title-lg": ["Hanken Grotesk"],
+                    "title-md": ["Hanken Grotesk"],
+                    "label-md": ["Hanken Grotesk"],
+                    "label-sm": ["Hanken Grotesk"],
+                    "body-md": ["Hanken Grotesk"],
+                    "display-lg": ["Hanken Grotesk"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "title-md": ["16px", {"lineHeight": "24px", "fontWeight": "600"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "label-sm": ["11px", {"lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body {
+            background-color: #fff8f7;
+            font-family: 'Hanken Grotesk', sans-serif;
+        }
+        .sidebar-active {
+            background-color: #c8e4f4;
+            color: #4c6674;
+            border-left: 4px solid #880009;
+            font-weight: 700;
+        }
+        .table-container {
+            border: 1px solid #e4beb9;
+            border-radius: 12px;
+            overflow: hidden;
+            background: white;
+        }
+    </style>
+</head>
+<body class="flex min-h-screen">
+<!-- SideNavBar -->
+<aside class="flex flex-col w-[280px] h-full fixed left-0 py-base bg-secondary dark:bg-secondary-fixed-dim z-40 transition-all duration-200">
+<div class="px-lg py-xl">
+<h1 class="text-title-md font-title-md font-bold text-on-secondary mb-xs">Fatec Conecta</h1>
+<p class="font-body-md text-body-md text-on-secondary/70">Gestão de Biblioteca</p>
+</div>
+<nav class="flex-1 px-sm">
+<div class="space-y-unit">
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-secondary/70 hover:text-on-secondary hover:bg-secondary-fixed-variant/20 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-secondary/70 hover:text-on-secondary hover:bg-secondary-fixed-variant/20 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span class="font-label-md text-label-md">Livros</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-secondary/70 hover:text-on-secondary hover:bg-secondary-fixed-variant/20 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="swap_horiz">swap_horiz</span>
+<span class="font-label-md text-label-md">Empréstimos</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg sidebar-active scale-[0.98] transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-md text-label-md">Alunos</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-secondary/70 hover:text-on-secondary hover:bg-secondary-fixed-variant/20 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="assessment">assessment</span>
+<span class="font-label-md text-label-md">Relatórios</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-secondary/70 hover:text-on-secondary hover:bg-secondary-fixed-variant/20 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-md text-label-md">Configurações</span>
+</a>
+</div>
+</nav>
+<div class="px-sm pb-lg">
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-secondary/70 hover:text-on-secondary hover:bg-secondary-fixed-variant/20 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-label-md text-label-md">Sair</span>
+</a>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="ml-[280px] flex-1 flex flex-col min-h-screen">
+<!-- TopNavBar -->
+<header class="flex justify-between items-center px-container-margin w-full fixed top-0 left-[280px] right-0 h-16 z-30 bg-primary dark:bg-primary-container text-on-primary shadow-none">
+<div class="flex items-center gap-lg">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-primary/60" data-icon="search">search</span>
+<input class="bg-primary-container/20 border-none rounded-full pl-10 pr-4 py-1.5 text-body-md font-body-md placeholder:text-on-primary/50 focus:ring-2 focus:ring-on-primary/30 w-64 transition-all" placeholder="Buscar por matrícula..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-lg">
+<button class="material-symbols-outlined text-on-primary hover:bg-primary-container/20 p-2 rounded-full transition-colors" data-icon="notifications">notifications</button>
+<div class="flex items-center gap-md">
+<span class="font-label-md text-label-md text-on-primary">Bibliotecário Nome</span>
+<img alt="Foto de perfil do bibliotecário" class="w-8 h-8 rounded-full border border-on-primary/20" data-alt="A professional headshot of a librarian in a modern library setting. The lighting is soft and natural, emphasizing a calm and focused environment. The individual is smiling slightly, dressed in smart-casual business attire. The color palette features warm wooden tones from bookshelves in the background, contrasting with the crisp, modern UI elements of the platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAlapXNFBaHGlJJjLxcws8d4K-AtAf6ifTsufKTw5BUCdU_4DGewsKpC9mLwCslZM9afbq5Ono0_OsyQJ9r1xQTb257lqDqM3aQwBc_xbsG8-cK7Q1uNjNuSuFojzLcGeGLgT7-kpN_6rDnbbhdYkQYJ6aszcqYKEo5dZNZ2q91evn7XjsHb-AqH9o1LMbo50HBYKYUFBEEtTfRZu0OR0k0N4kVxykZbbpivZAFNyiczBeO9elQhhKIxW8Q03CijiV-9h59GoS3kFs"/>
+</div>
+</div>
+</header>
+<!-- Canvas Area -->
+<div class="mt-16 p-container-margin flex flex-col gap-lg">
+<!-- Page Header & Filters -->
+<section class="flex flex-col md:flex-row md:items-end justify-between gap-md">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface">Gestão de Alunos</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Visualize e gerencie a base de dados de alunos cadastrados no sistema.</p>
+</div>
+<div class="flex flex-wrap gap-md items-center">
+<div class="flex flex-col gap-xs">
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Filtrar por Curso</label>
+<select class="rounded-xl border-outline-variant bg-surface-container-lowest text-body-md font-body-md px-md py-sm focus:border-secondary focus:ring-2 focus:ring-secondary/20 min-w-[200px]">
+<option>Todos os cursos</option>
+<option>Análise e Desenv. de Sistemas</option>
+<option>Gestão Comercial</option>
+<option>Logística</option>
+<option>Gestão de TI</option>
+</select>
+</div>
+<button class="mt-auto bg-primary text-on-primary px-lg py-sm rounded-xl font-title-md text-title-md hover:opacity-90 transition-opacity flex items-center gap-sm">
+<span class="material-symbols-outlined" data-icon="person_add">person_add</span>
+                        Novo Aluno
+                    </button>
+</div>
+</section>
+<!-- Stats Overview (Small Bento Section) -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-md">
+<div class="bg-surface-container-lowest border border-outline-variant p-md rounded-xl flex items-center gap-md">
+<div class="bg-primary/10 text-primary p-md rounded-xl">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase">Total de Alunos</p>
+<h4 class="font-headline-md text-headline-md text-on-surface">1,248</h4>
+</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant p-md rounded-xl flex items-center gap-md">
+<div class="bg-tertiary/10 text-tertiary p-md rounded-xl">
+<span class="material-symbols-outlined" data-icon="auto_stories">auto_stories</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase">Livros Circulando</p>
+<h4 class="font-headline-md text-headline-md text-on-surface">312</h4>
+</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant p-md rounded-xl flex items-center gap-md">
+<div class="bg-error/10 text-error p-md rounded-xl">
+<span class="material-symbols-outlined" data-icon="warning">warning</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase">Atrasos Pendentes</p>
+<h4 class="font-headline-md text-headline-md text-on-surface">24</h4>
+</div>
+</div>
+</section>
+<!-- Data Table Section -->
+<section class="table-container shadow-sm">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-low border-b border-outline-variant">
+<tr>
+<th class="px-lg py-md font-label-sm text-label-sm text-on-surface-variant uppercase">Aluno</th>
+<th class="px-lg py-md font-label-sm text-label-sm text-on-surface-variant uppercase">Matrícula</th>
+<th class="px-lg py-md font-label-sm text-label-sm text-on-surface-variant uppercase">Curso / Turma</th>
+<th class="px-lg py-md font-label-sm text-label-sm text-on-surface-variant uppercase text-center">Livros Ativos</th>
+<th class="px-lg py-md font-label-sm text-label-sm text-on-surface-variant uppercase text-right">Ações</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="px-lg py-md">
+<div class="flex items-center gap-md">
+<img alt="Foto de perfil" class="w-10 h-10 rounded-full object-cover border border-outline-variant" data-alt="A portrait of a male college student with a friendly expression. He is wearing a casual hoodie and is positioned against a bright, out-of-focus university courtyard background. The lighting is crisp and modern, matching the professional red and white branding of the library management software." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhm31WZdmXLrVm9XnJfFAz9M1byCO_MNuElVZT2bnqciaDgAQ7nOPbXxq1sqCroa5iAtYtUIRgyi4SvICctH5EpvGyc20h0zqbeBeSqxEcT_ya7jSgciZQCx8-tVwFItlC70-T8wym0ahPXzb_eu7RhU4RZtzZ7NowvW8rJqYNIKSTE4rnWNLAC4BbukoipHGBvv9W7fgIyRh6V5XiKKmg5A8lE5clJH4Qj4Ou4vUtq1iKieJf3buGLeE3_2fdPcwsltEBvk5odUw"/>
+<div>
+<p class="font-title-md text-title-md text-on-surface">Ricardo Oliveira Lima</p>
+<p class="font-label-md text-label-md text-on-surface-variant">ricardo.lima@fatec.sp.gov.br</p>
+</div>
+</div>
+</td>
+<td class="px-lg py-md">
+<span class="font-body-md text-body-md text-on-surface font-mono">1430482211045</span>
+</td>
+<td class="px-lg py-md">
+<div class="flex flex-col">
+<span class="font-body-md text-body-md text-on-surface">Análise e Desenv. Sistemas</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">4º Semestre - Matutino</span>
+</div>
+</td>
+<td class="px-lg py-md text-center">
+<span class="px-md py-xs bg-secondary-container text-on-secondary-container rounded-full font-label-md text-label-md font-bold">2</span>
+</td>
+<td class="px-lg py-md text-right">
+<div class="flex justify-end gap-sm">
+<button class="px-md py-sm rounded-lg border border-outline-variant text-secondary font-label-md text-label-md hover:bg-neutral-100 transition-colors flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px]" data-icon="history">history</span>
+                                        Histórico
+                                    </button>
+<button class="px-md py-sm rounded-lg bg-surface-container-highest text-on-surface-variant font-label-md text-label-md hover:opacity-80 transition-opacity flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px]" data-icon="visibility">visibility</span>
+                                        Ver Perfil
+                                    </button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="px-lg py-md">
+<div class="flex items-center gap-md">
+<img alt="Foto de perfil" class="w-10 h-10 rounded-full object-cover border border-outline-variant" data-alt="Close up portrait of a smiling female student with glasses, looking professional and ready for study. The background is a minimalist modern study space with neutral light. The aesthetic is clean and high-definition, reflecting an efficient academic software environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPRpkkhTfUMyTafBRX--aEbLVB5CXgl4U4kHffbIqUeJu1SDY3iQTweC45Rfsd5nxbWmbTlcrKwOm68urfS73Z4iVsjjIeXMVgVUO1TGCNUhcl0oNvfITRO2SQWAjmKSzWadozftY7qEHSpL_NPqGBhyifmBV30GGS-ircAevfTM4N5guQ6tCoJm-5w0YTSQ4G6ttyHH55ksnjUwZICPK-A3ROiTED-ZrTRUUDKTcF7jpRna12pArAdnmMxjFLZfloEdV8R4LqNGY"/>
+<div>
+<p class="font-title-md text-title-md text-on-surface">Beatriz Santos Moraes</p>
+<p class="font-label-md text-label-md text-on-surface-variant">beatriz.moraes@fatec.sp.gov.br</p>
+</div>
+</div>
+</td>
+<td class="px-lg py-md">
+<span class="font-body-md text-body-md text-on-surface font-mono">1430482211022</span>
+</td>
+<td class="px-lg py-md">
+<div class="flex flex-col">
+<span class="font-body-md text-body-md text-on-surface">Gestão de TI</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">2º Semestre - Noturno</span>
+</div>
+</td>
+<td class="px-lg py-md text-center">
+<span class="px-md py-xs bg-error-container text-on-error-container rounded-full font-label-md text-label-md font-bold">5</span>
+</td>
+<td class="px-lg py-md text-right">
+<div class="flex justify-end gap-sm">
+<button class="px-md py-sm rounded-lg border border-outline-variant text-secondary font-label-md text-label-md hover:bg-neutral-100 transition-colors flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px]" data-icon="history">history</span>
+                                        Histórico
+                                    </button>
+<button class="px-md py-sm rounded-lg bg-surface-container-highest text-on-surface-variant font-label-md text-label-md hover:opacity-80 transition-opacity flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px]" data-icon="visibility">visibility</span>
+                                        Ver Perfil
+                                    </button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="px-lg py-md">
+<div class="flex items-center gap-md">
+<img alt="Foto de perfil" class="w-10 h-10 rounded-full object-cover border border-outline-variant" data-alt="Portrait of a young male student with short hair, smiling brightly. He is in a library with soft bokeh lighting from distant lamps. The image has a warm, inviting feel with a focus on academic achievement and accessibility, using a palette of soft whites and deep reds." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6SlGW-q0Xs713HUQZ85z6WyJyh4yhP3DwcqK5p3189dF--hR0N7tRziq6_mkVxwKWY42nS-MFLaFqDYquJ6TsPeFgqnuthiaigY9RRmN-wRelGkYrbvH4jFwhRB8bh1Fa7QvuL32tLeGdFgdAEwQ4QAmWPqv8kEssqFr5r09i0YXKk_sTCJ0_FBMKk_wA3SPw1CZiYaILTh0GDSYUep9LerPTFU2_na9VJGhOBE7LFm7NJCa-uY9ygYjupOIAclDf-DcAm-CsiWs"/>
+<div>
+<p class="font-title-md text-title-md text-on-surface">Lucas Ferreira Souza</p>
+<p class="font-label-md text-label-md text-on-surface-variant">lucas.ferreira@fatec.sp.gov.br</p>
+</div>
+</div>
+</td>
+<td class="px-lg py-md">
+<span class="font-body-md text-body-md text-on-surface font-mono">1430482211098</span>
+</td>
+<td class="px-lg py-md">
+<div class="flex flex-col">
+<span class="font-body-md text-body-md text-on-surface">Logística</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">6º Semestre - Vespertino</span>
+</div>
+</td>
+<td class="px-lg py-md text-center">
+<span class="px-md py-xs bg-surface-variant text-on-surface-variant rounded-full font-label-md text-label-md font-bold">0</span>
+</td>
+<td class="px-lg py-md text-right">
+<div class="flex justify-end gap-sm">
+<button class="px-md py-sm rounded-lg border border-outline-variant text-secondary font-label-md text-label-md hover:bg-neutral-100 transition-colors flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px]" data-icon="history">history</span>
+                                        Histórico
+                                    </button>
+<button class="px-md py-sm rounded-lg bg-surface-container-highest text-on-surface-variant font-label-md text-label-md hover:opacity-80 transition-opacity flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px]" data-icon="visibility">visibility</span>
+                                        Ver Perfil
+                                    </button>
+</div>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="px-lg py-md">
+<div class="flex items-center gap-md">
+<img alt="Foto de perfil" class="w-10 h-10 rounded-full object-cover border border-outline-variant" data-alt="Close-up artistic portrait of a diverse female student with curly hair, in a brightly lit academic hall. The lighting creates a high-key, modern aesthetic. Her expression is serious and determined. The overall visual style is sleek and professional, aligning with the red-themed brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBt89UUVILhImJaOFjCy_IkFhLKC9i4nIrssiM0I7eo0E1NPc4N3wuCDEk3aOyUOXE2WXJI6hy5CXteaTksKFgcmYrhvBfmCTqqpJKbHGSQFzZv_wMw22MJH0bqSjtEAZNG9g5CntF9WFG_fyvHNVoDj3qyqvay4PZwQX8UyMPqQHN5nymZYk7kFbKChCW0cUyYyEISUe-ozMvoTUUWsH_cyzab27-R7o8T4F6-3gx3RVsQEHhFSXYoq0yKoVaC7pjj4pfQQn-Z_ho"/>
+<div>
+<p class="font-title-md text-title-md text-on-surface">Mariana Costa Silva</p>
+<p class="font-label-md text-label-md text-on-surface-variant">mariana.costa@fatec.sp.gov.br</p>
+</div>
+</div>
+</td>
+<td class="px-lg py-md">
+<span class="font-body-md text-body-md text-on-surface font-mono">1430482211057</span>
+</td>
+<td class="px-lg py-md">
+<div class="flex flex-col">
+<span class="font-body-md text-body-md text-on-surface">Gestão Comercial</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">1º Semestre - Noturno</span>
+</div>
+</td>
+<td class="px-lg py-md text-center">
+<span class="px-md py-xs bg-secondary-container text-on-secondary-container rounded-full font-label-md text-label-md font-bold">1</span>
+</td>
+<td class="px-lg py-md text-right">
+<div class="flex justify-end gap-sm">
+<button class="px-md py-sm rounded-lg border border-outline-variant text-secondary font-label-md text-label-md hover:bg-neutral-100 transition-colors flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px]" data-icon="history">history</span>
+                                        Histórico
+                                    </button>
+<button class="px-md py-sm rounded-lg bg-surface-container-highest text-on-surface-variant font-label-md text-label-md hover:opacity-80 transition-opacity flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px]" data-icon="visibility">visibility</span>
+                                        Ver Perfil
+                                    </button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<!-- Pagination -->
+<div class="px-lg py-md bg-surface-container-lowest border-t border-outline-variant flex items-center justify-between">
+<p class="font-label-md text-label-md text-on-surface-variant">Mostrando 4 de 1,248 alunos</p>
+<div class="flex items-center gap-xs">
+<button class="w-8 h-8 flex items-center justify-center rounded-lg border border-outline-variant hover:bg-neutral-100 transition-colors opacity-50 cursor-not-allowed">
+<span class="material-symbols-outlined text-[18px]" data-icon="chevron_left">chevron_left</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg bg-primary text-on-primary font-label-md text-label-md font-bold shadow-sm">1</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg border border-outline-variant hover:bg-neutral-100 transition-colors font-label-md text-label-md text-on-surface">2</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg border border-outline-variant hover:bg-neutral-100 transition-colors font-label-md text-label-md text-on-surface">3</button>
+<span class="px-xs text-on-surface-variant">...</span>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg border border-outline-variant hover:bg-neutral-100 transition-colors font-label-md text-label-md text-on-surface">312</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg border border-outline-variant hover:bg-neutral-100 transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</section>
+</div>
+</main>
+<script>
+        // Simple interactivity for demonstration
+        document.querySelectorAll('tbody tr').forEach(row => {
+            row.addEventListener('click', (e) => {
+                if(!e.target.closest('button')) {
+                    // Logic to open profile could go here
+                    console.log('Row clicked');
+                }
+            });
+        });
+    </script>
+</body></html>

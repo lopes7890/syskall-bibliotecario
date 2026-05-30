@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Fatec Conecta - Detalhes do Livro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-variant": "#fadcd8",
+                        "surface-container": "#ffe9e6",
+                        "surface-container-low": "#fff0ee",
+                        "error-container": "#ffdad6",
+                        "on-background": "#271816",
+                        "surface-container-lowest": "#ffffff",
+                        "outline": "#906f6c",
+                        "secondary-container": "#c8e4f4",
+                        "outline-variant": "#e4beb9",
+                        "on-secondary-fixed": "#011e2a",
+                        "surface-bright": "#fff8f7",
+                        "primary-fixed": "#ffdad6",
+                        "surface-tint": "#ba1a1b",
+                        "secondary-fixed-dim": "#afcbda",
+                        "surface": "#fff8f7",
+                        "on-secondary-container": "#4c6674",
+                        "primary-fixed-dim": "#ffb4ab",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-fixed": "#001b3d",
+                        "primary": "#880009",
+                        "on-primary-container": "#ffc0b9",
+                        "on-tertiary-fixed-variant": "#00468b",
+                        "primary-container": "#b11116",
+                        "surface-container-highest": "#fadcd8",
+                        "on-primary": "#ffffff",
+                        "inverse-surface": "#3e2c2a",
+                        "on-primary-fixed-variant": "#93000b",
+                        "on-tertiary-container": "#b7d0ff",
+                        "background": "#fff8f7",
+                        "secondary-fixed": "#cbe7f6",
+                        "on-secondary-fixed-variant": "#304a57",
+                        "surface-container-high": "#ffe2de",
+                        "on-surface-variant": "#5b403d",
+                        "on-primary-fixed": "#410002",
+                        "inverse-on-surface": "#ffedea",
+                        "on-error-container": "#93000a",
+                        "tertiary": "#004081",
+                        "on-surface": "#271816",
+                        "secondary": "#48626f",
+                        "inverse-primary": "#ffb4ab",
+                        "error": "#ba1a1a",
+                        "on-secondary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "surface-dim": "#f1d3d0",
+                        "tertiary-container": "#0057ab",
+                        "tertiary-fixed": "#d6e3ff",
+                        "tertiary-fixed-dim": "#a9c7ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "gutter": "16px",
+                        "lg": "24px",
+                        "sm": "8px",
+                        "unit": "4px",
+                        "md": "16px",
+                        "xs": "4px",
+                        "container-margin": "24px",
+                        "xxl": "48px",
+                        "sidebar-height": "280px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Hanken Grotesk"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "title-lg": ["Hanken Grotesk"],
+                        "title-md": ["Hanken Grotesk"],
+                        "label-md": ["Hanken Grotesk"],
+                        "label-sm": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"],
+                        "display-lg": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "title-md": ["16px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                        "label-sm": ["11px", {"lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Hanken Grotesk', sans-serif; background-color: #fff8f7; color: #271816; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .sidebar-active { background-color: #c8e4f4; color: #4c6674; border-left: 4px solid #880009; font-weight: 700; transform: scale(0.98); }
+        .shadow-soft { box-shadow: 0px 4px 12px rgba(58, 84, 97, 0.08); }
+        .book-gradient { background: linear-gradient(135deg, #880009 0%, #b11116 100%); }
+    </style>
+</head>
+<body class="min-h-screen">
+<!-- TopAppBar Shell -->
+<header class="flex justify-between items-center px-container-margin w-full fixed top-0 z-50 h-16 bg-primary dark:bg-primary-container text-on-primary dark:text-on-primary-container">
+<div class="flex items-center gap-md">
+<span class="text-title-md font-title-md font-bold text-on-primary">Fatec Conecta</span>
+</div>
+<div class="flex items-center gap-lg">
+<div class="relative hidden md:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 opacity-70">search</span>
+<input class="bg-primary-container/20 border-none rounded-xl pl-10 pr-4 py-2 text-body-md focus:ring-2 focus:ring-on-primary/30 w-64 placeholder:text-on-primary/60" placeholder="Buscar no acervo..." type="text"/>
+</div>
+<div class="flex items-center gap-md">
+<button class="material-symbols-outlined hover:bg-primary-container/20 p-2 rounded-full transition-colors">notifications</button>
+<div class="h-8 w-[1px] bg-on-primary/20 mx-1"></div>
+<div class="flex items-center gap-sm">
+<span class="font-label-md text-label-md hidden sm:block">Bibliotecário Nome</span>
+<img alt="Foto de perfil do bibliotecário" class="w-8 h-8 rounded-full border-2 border-on-primary/20" data-alt="A professional headshot of a middle-aged male librarian with glasses, wearing a clean white shirt. The background is a blurred academic library setting with soft sunlight filtering through bookshelves. The lighting is high-key and professional, matching a modern corporate aesthetic with warm tones and crisp clarity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCVxJRIGUJiHIFkJZLy0ewttMVnTu-rItZAtRtf4tOe7HnTY15KDbZqMt1t1wElMlRdO0b5RtV0CIe7bCBZAvDy_grzJOii-YhEVQsABaLXqSeiYh_opC3sPK8wzSYufmQp1KKd4SQAVU--Tf3KTBrEZB1tpu8ev92d7ZnI-MJXHaDRUos66ZC4AqQ5sUg-lQHHrBu2AHVwy1AbWwbyhWqe4QWJWbdEJOLABVIklBTf7HPj7bNjO6OONX8FzggVf_rdj9NOJ-HVLOk"/>
+</div>
+</div>
+</div>
+</header>
+<!-- SideNavBar Shell -->
+<aside class="hidden md:flex flex-col w-[280px] h-[calc(100vh-64px)] fixed left-0 top-16 bg-secondary dark:bg-secondary-fixed-dim text-on-secondary dark:text-on-secondary-fixed py-md z-40 transition-all">
+<nav class="flex-1 px-sm space-y-1">
+<a class="flex items-center gap-md px-md py-3 rounded-lg text-on-secondary/70 hover:text-on-secondary hover:bg-secondary-fixed-variant/20 transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-3 rounded-lg sidebar-active transition-all" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="font-label-md text-label-md">Livros</span>
+</a>
+<a class="flex items-center gap-md px-md py-3 rounded-lg text-on-secondary/70 hover:text-on-secondary hover:bg-secondary-fixed-variant/20 transition-all" href="#">
+<span class="material-symbols-outlined">swap_horiz</span>
+<span class="font-label-md text-label-md">Empréstimos</span>
+</a>
+<a class="flex items-center gap-md px-md py-3 rounded-lg text-on-secondary/70 hover:text-on-secondary hover:bg-secondary-fixed-variant/20 transition-all" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-md text-label-md">Alunos</span>
+</a>
+<a class="flex items-center gap-md px-md py-3 rounded-lg text-on-secondary/70 hover:text-on-secondary hover:bg-secondary-fixed-variant/20 transition-all" href="#">
+<span class="material-symbols-outlined">assessment</span>
+<span class="font-label-md text-label-md">Relatórios</span>
+</a>
+<a class="flex items-center gap-md px-md py-3 rounded-lg text-on-secondary/70 hover:text-on-secondary hover:bg-secondary-fixed-variant/20 transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md">Configurações</span>
+</a>
+</nav>
+<div class="px-sm pt-md border-t border-on-secondary/10">
+<a class="flex items-center gap-md px-md py-3 rounded-lg text-on-secondary/70 hover:text-on-secondary hover:bg-secondary-fixed-variant/20 transition-all" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-label-md text-label-md">Sair</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="md:ml-[280px] pt-24 pb-12 px-container-margin">
+<!-- Action Header -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-md mb-xl">
+<div>
+<nav class="flex items-center gap-xs text-on-surface-variant mb-xs">
+<a class="font-label-sm text-label-sm hover:text-primary transition-colors" href="#">LIVROS</a>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="font-label-sm text-label-sm">DETALHES DO ACERVO</span>
+</nav>
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Estruturas de Dados e Algoritmos</h1>
+</div>
+<div class="flex items-center gap-md">
+<button class="flex items-center gap-sm px-lg py-3 rounded-xl border border-outline-variant text-secondary font-title-md hover:bg-neutral-100 transition-all shadow-sm">
+<span class="material-symbols-outlined">edit</span>
+<span>Editar Informações</span>
+</button>
+<button class="flex items-center gap-sm px-lg py-3 rounded-xl bg-primary text-on-primary font-title-md hover:opacity-90 transition-all shadow-soft">
+<span class="material-symbols-outlined">add_circle</span>
+<span>Novo Empréstimo</span>
+</button>
+</div>
+</div>
+<!-- Book Core Details Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-xl mb-xl">
+<!-- Highlighted Cover -->
+<div class="lg:col-span-4">
+<div class="relative group aspect-[3/4] rounded-xl overflow-hidden shadow-soft border border-neutral-200">
+<img alt="Capa do livro" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A premium hardcover book titled 'Data Structures' leaning against a minimalist white marble wall. The cover is a deep burgundy leather with gold embossed lettering. The lighting is soft and directional, creating a high-end editorial feel. The overall aesthetic is professional, scholarly, and clean, with a focus on rich textures and corporate modern elegance." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8TsObs59iEja5XyFDcvZbXJDD-rM8Z3hUA3rCXmCHDiQkIOm3drct98hKnXk4EcksmcOmzrW2tRR3syMZ0vXq4jJKRb3XP329j6RhCgmK_0zxDZBL49SeJACf4WYBWUQeN4gyQNHuhBqFMBJWUd513yFqVGQ9xfJ-biiIw0zCO9F7D4soKjh3IHcClBCJr-_Kx9mbW2GgiptneJ6bKtGQLalxiTjc1pnhxgQDCexZ-oyq8iC66_ZIErV6jyOvw68r6kRFq6lojZ8"/>
+<div class="absolute top-4 right-4">
+<span class="px-md py-2 rounded-full bg-surface-container-highest text-primary font-label-md text-label-md border border-primary/20 backdrop-blur-md">
+                            DISPONÍVEL
+                        </span>
+</div>
+</div>
+<div class="mt-lg grid grid-cols-2 gap-md">
+<div class="p-md bg-surface-container rounded-xl border border-outline-variant">
+<span class="font-label-sm text-label-sm text-on-surface-variant block mb-1">CÓDIGO</span>
+<span class="font-title-md text-title-md text-on-surface">FAC-ED-2024</span>
+</div>
+<div class="p-md bg-surface-container rounded-xl border border-outline-variant">
+<span class="font-label-sm text-label-sm text-on-surface-variant block mb-1">LOCALIZAÇÃO</span>
+<span class="font-title-md text-title-md text-on-surface">Corredor C-04</span>
+</div>
+</div>
+</div>
+<!-- Complete Information Columns -->
+<div class="lg:col-span-8 flex flex-col gap-lg">
+<!-- Info Card -->
+<div class="bg-white p-xl rounded-xl border border-neutral-200 shadow-soft">
+<div class="border-b border-neutral-100 pb-md mb-lg">
+<h2 class="font-headline-md text-headline-md text-on-surface">Especificações Técnicas</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-xl">
+<div class="space-y-md">
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider block mb-1">Autor(es)</span>
+<p class="font-body-lg text-body-lg text-on-surface">Narendra S. Chaudhari, Arindam Biswas</p>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider block mb-1">Editora</span>
+<p class="font-body-lg text-body-lg text-on-surface">Pearson Academic Brasil</p>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider block mb-1">Ano de Lançamento</span>
+<p class="font-body-lg text-body-lg text-on-surface">2023</p>
+</div>
+</div>
+<div class="space-y-md">
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider block mb-1">Edição</span>
+<p class="font-body-lg text-body-lg text-on-surface">4ª Edição Revisada e Ampliada</p>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider block mb-1">ISBN-13</span>
+<p class="font-body-lg text-body-lg text-on-surface">978-85-0000-000-0</p>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider block mb-1">Idioma</span>
+<p class="font-body-lg text-body-lg text-on-surface">Português (Brasil)</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Synopsis Card -->
+<div class="bg-white p-xl rounded-xl border border-neutral-200 shadow-soft flex-1">
+<div class="border-b border-neutral-100 pb-md mb-lg">
+<h2 class="font-headline-md text-headline-md text-on-surface">Sinopse</h2>
+</div>
+<p class="font-body-lg text-body-lg text-on-surface leading-relaxed">
+                        Este livro aborda os conceitos fundamentais de estruturas de dados e algoritmos de uma maneira prática e didática. Através de exemplos em diversas linguagens de programação, o autor guia o estudante pelo entendimento de listas ligadas, árvores binárias, algoritmos de ordenação e grafos. Essencial para estudantes de Ciência da Computação e Análise de Sistemas que buscam excelência técnica e eficiência computacional. A nova edição conta com capítulos exclusivos sobre complexidade de algoritmos Big O e implementação moderna em Python.
+                    </p>
+</div>
+</div>
+</div>
+<!-- Historical Loans Table Section -->
+<div class="bg-white rounded-xl border border-neutral-200 shadow-soft overflow-hidden">
+<div class="p-xl border-b border-neutral-100 flex justify-between items-center bg-neutral-50">
+<h2 class="font-headline-md text-headline-md text-on-surface">Histórico de Empréstimos</h2>
+<div class="flex items-center gap-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">history</span>
+<span class="font-label-md text-label-md">Total de 42 locações</span>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-neutral-100">
+<th class="px-xl py-md font-label-sm text-label-sm text-[#757575] uppercase">Aluno</th>
+<th class="px-xl py-md font-label-sm text-label-sm text-[#757575] uppercase">RA / Matrícula</th>
+<th class="px-xl py-md font-label-sm text-label-sm text-[#757575] uppercase">Data Retirada</th>
+<th class="px-xl py-md font-label-sm text-label-sm text-[#757575] uppercase">Devolução Prevista</th>
+<th class="px-xl py-md font-label-sm text-label-sm text-[#757575] uppercase">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-neutral-100">
+<tr class="hover:bg-neutral-50 transition-colors">
+<td class="px-xl py-md flex items-center gap-sm">
+<img alt="Aluno Avatar" class="w-8 h-8 rounded-full" data-alt="A portrait of a male Brazilian university student with curly hair and a friendly expression, wearing a casual denim shirt. High-key lighting, bright academic setting background, professional photography style with sharp focus on the subject." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB0u8YkZw81PzAf-qZPwKSm7amLgGUNRFydeymm_xxvnt9xSxhzdKmMuG_dWxUsgUZPa_cJWFNiV0Rhisr970Xpisb6DH-OZzcEg4adYQxTHL6lfYF577q-60IAG_m1DlQqb9Uv4ufbmq9C0T4D2cod8uv0ckZtj2OrT59SsYW9spLpcQCKtL4sPxtk4ZYrdmff9hPD4yUJPzxR7rR_GQk9bCebvFfswe6JiqeUXD0MlhumhsC45AiD4D2nqR2fZK-SHc9CCmMXGJM"/>
+<span class="font-body-md text-body-md text-on-surface">Ricardo Mendonça de Souza</span>
+</td>
+<td class="px-xl py-md font-body-md text-body-md text-on-surface">2840482113005</td>
+<td class="px-xl py-md font-body-md text-body-md text-on-surface">12/05/2024</td>
+<td class="px-xl py-md font-body-md text-body-md text-on-surface">19/05/2024</td>
+<td class="px-xl py-md">
+<span class="px-sm py-1 rounded-md bg-green-100 text-green-800 font-label-sm text-label-sm">DEVOLVIDO</span>
+</td>
+</tr>
+<tr class="hover:bg-neutral-50 transition-colors">
+<td class="px-xl py-md flex items-center gap-sm">
+<img alt="Aluno Avatar" class="w-8 h-8 rounded-full" data-alt="A portrait of a young female Brazilian computer science student with long dark hair and glasses, wearing a neutral-colored blouse. Bright, modern office lighting, minimal clean background, professional corporate portrait style with a sophisticated color palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfI8Vh0MeIIYG795hdnKAF9KX-zQaWaJts3WbFL5RM4B79fb8C0CitsR7FIUwkIqBxUTXTrZfpbBsYRVGQoxGZ_eGsSEVQprket14t1mUY-vK6xOiCKcCTAW1A72LRifQgTgszruumcF5JUA1XEbpdlfZT_RsZSq4zzZXz938vcYCI8wydxJIeAIbYv7qaHqtIuFyiUwtxLEXnkDExgKjHxvfRKGgp9QMNl8bE1xE5R44TAQ5et9JWi4fh8tx5L7wkBjAmnjgyMgM"/>
+<span class="font-body-md text-body-md text-on-surface">Ana Paula Martins</span>
+</td>
+<td class="px-xl py-md font-body-md text-body-md text-on-surface">2840482211012</td>
+<td class="px-xl py-md font-body-md text-body-md text-on-surface">02/05/2024</td>
+<td class="px-xl py-md font-body-md text-body-md text-on-surface">09/05/2024</td>
+<td class="px-xl py-md">
+<span class="px-sm py-1 rounded-md bg-green-100 text-green-800 font-label-sm text-label-sm">DEVOLVIDO</span>
+</td>
+</tr>
+<tr class="hover:bg-neutral-50 transition-colors">
+<td class="px-xl py-md flex items-center gap-sm">
+<img alt="Aluno Avatar" class="w-8 h-8 rounded-full" data-alt="A professional headshot of a young male student in his 20s with short hair and a subtle smile. He is wearing a grey t-shirt in a well-lit campus corridor. The aesthetic is clean and modern, using soft lighting to emphasize efficiency and academic success." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-EJl3KXzcYT2aKIIZ7CrNMNLSgUQKeHkjAnkpymXGekXRJW3AVzsWigZ8oU4cWTHbvd8P0wYAQL0fLVgdtiR1wM7-67BpxFocxfm6D7To2OMYTBhTmPO4Unbz4lIKEO_FL6BJ92L-P9-CIHLFzoMaA1xUowDR9-VePA28db-rRfobY3CuRbyWScFgV4J6vQCSDTALZuWqrOjEjPzLqomMQ2QXFOmNSbhpm1_07qNLh23hjMPijJAirDeo3HuSiJIooiyUikzDlGM"/>
+<span class="font-body-md text-body-md text-on-surface">Lucas Oliveira Costa</span>
+</td>
+<td class="px-xl py-md font-body-md text-body-md text-on-surface">2840482023044</td>
+<td class="px-xl py-md font-body-md text-body-md text-on-surface">15/04/2024</td>
+<td class="px-xl py-md font-body-md text-body-md text-on-surface">22/04/2024</td>
+<td class="px-xl py-md">
+<span class="px-sm py-1 rounded-md bg-red-100 text-red-800 font-label-sm text-label-sm">ATRASADO</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-lg flex justify-center bg-neutral-50 border-t border-neutral-100">
+<button class="text-primary font-title-md hover:underline transition-all">Carregar mais registros</button>
+</div>
+</div>
+</main>
+<!-- Interactive script for ripples or minor effects -->
+<script>
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('mousedown', function() {
+                this.classList.add('scale-[0.97]');
+            });
+            button.addEventListener('mouseup', function() {
+                this.classList.remove('scale-[0.97]');
+            });
+        });
+    </script>
+</body></html>

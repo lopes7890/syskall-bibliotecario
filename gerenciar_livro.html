@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+
+<html class="light" lang="pt-br"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Gerenciamento de Acervo | Fatec Conecta</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "surface-variant": "#fadcd8",
+                "surface-container": "#ffe9e6",
+                "surface-container-low": "#fff0ee",
+                "error-container": "#ffdad6",
+                "on-background": "#271816",
+                "surface-container-lowest": "#ffffff",
+                "outline": "#906f6c",
+                "secondary-container": "#c8e4f4",
+                "outline-variant": "#e4beb9",
+                "on-secondary-fixed": "#011e2a",
+                "surface-bright": "#fff8f7",
+                "primary-fixed": "#ffdad6",
+                "surface-tint": "#ba1a1b",
+                "secondary-fixed-dim": "#afcbda",
+                "surface": "#fff8f7",
+                "on-secondary-container": "#4c6674",
+                "primary-fixed-dim": "#ffb4ab",
+                "on-tertiary": "#ffffff",
+                "on-tertiary-fixed": "#001b3d",
+                "primary": "#880009",
+                "on-primary-container": "#ffc0b9",
+                "on-tertiary-fixed-variant": "#00468b",
+                "primary-container": "#b11116",
+                "surface-container-highest": "#fadcd8",
+                "on-primary": "#ffffff",
+                "inverse-surface": "#3e2c2a",
+                "on-primary-fixed-variant": "#93000b",
+                "on-tertiary-container": "#b7d0ff",
+                "background": "#fff8f7",
+                "secondary-fixed": "#cbe7f6",
+                "on-secondary-fixed-variant": "#304a57",
+                "surface-container-high": "#ffe2de",
+                "on-surface-variant": "#5b403d",
+                "on-primary-fixed": "#410002",
+                "inverse-on-surface": "#ffedea",
+                "on-error-container": "#93000a",
+                "tertiary": "#004081",
+                "on-surface": "#271816",
+                "secondary": "#48626f",
+                "inverse-primary": "#ffb4ab",
+                "error": "#ba1a1a",
+                "on-secondary": "#ffffff",
+                "on-error": "#ffffff",
+                "surface-dim": "#f1d3d0",
+                "tertiary-container": "#0057ab",
+                "tertiary-fixed": "#d6e3ff",
+                "tertiary-fixed-dim": "#a9c7ff"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+            },
+            "spacing": {
+                "xl": "32px",
+                "gutter": "16px",
+                "lg": "24px",
+                "sm": "8px",
+                "unit": "4px",
+                "md": "16px",
+                "xs": "4px",
+                "container-margin": "24px",
+                "xxl": "48px",
+                "sidebar-height": "280px"
+            },
+            "fontFamily": {
+                "headline-md": ["Hanken Grotesk"],
+                "headline-lg": ["Hanken Grotesk"],
+                "body-lg": ["Hanken Grotesk"],
+                "title-lg": ["Hanken Grotesk"],
+                "title-md": ["Hanken Grotesk"],
+                "label-md": ["Hanken Grotesk"],
+                "label-sm": ["Hanken Grotesk"],
+                "body-md": ["Hanken Grotesk"],
+                "display-lg": ["Hanken Grotesk"]
+            },
+            "fontSize": {
+                "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                "title-md": ["16px", {"lineHeight": "24px", "fontWeight": "600"}],
+                "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                "label-sm": ["11px", {"lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        body { font-family: 'Hanken Grotesk', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #e4beb9; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+<!-- TopNavBar -->
+<header class="bg-primary dark:bg-primary-container text-on-primary dark:text-on-primary-container flex justify-between items-center px-container-margin w-full fixed top-0 z-50 h-16">
+<div class="flex items-center gap-md">
+<span class="text-title-md font-title-md font-bold text-on-primary dark:text-on-primary-container">Fatec Conecta</span>
+</div>
+<div class="flex items-center gap-lg">
+<div class="hidden md:flex items-center bg-white/10 rounded-xl px-md py-xs">
+<span class="material-symbols-outlined text-on-primary/70 mr-sm" data-icon="search">search</span>
+<input class="bg-transparent border-none text-on-primary placeholder:text-on-primary/60 focus:ring-0 text-body-md" placeholder="Buscar no sistema..." type="text"/>
+</div>
+<div class="flex items-center gap-md">
+<button class="hover:bg-primary-container/20 transition-colors p-sm rounded-full relative">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-1 right-1 w-2 h-2 bg-secondary rounded-full"></span>
+</button>
+<div class="flex items-center gap-sm border-l border-white/20 pl-md">
+<span class="hidden md:block font-label-md text-label-md">Bibliotecário Nome</span>
+<img alt="Foto de perfil do bibliotecário" class="w-8 h-8 rounded-full border border-white/20" data-alt="A professional headshot of a library administrator in a clean, brightly lit office environment. The person has a friendly expression and is dressed in business casual attire. The background is slightly blurred, showing rows of modern bookshelves and a hint of a digital dashboard. The lighting is soft and high-key, aligning with a premium corporate modern aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuABS1GHc43uLE29eZZZ63XYdWKb9T9pyBoMOxFJ2TjJItJ4XFX5dSwI9lL-l-pkCfU7KCq-lDbv08p3jD7wD6dnHb01NbgDb0qaWRpv97AegTfI6NYU8_eTw76ToaPKA1P5797SJicmxdXqv8NFT2UquttjhBh2gZjC4ySG9tkRsNSE5ARyN4WE4Z3TLDY6SsZG1f6CZQk0vRJ-eNym3HRlBE4XR_FG0eSIfBFp7QwvXiJeuaBqYSCgXp2Zv8EorrGAIoawMQLzqqI"/>
+</div>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<nav class="bg-secondary dark:bg-secondary-fixed-dim text-on-secondary dark:text-on-secondary-fixed flex flex-col w-[280px] h-[calc(100vh-64px)] fixed left-0 top-16 py-base z-40">
+<div class="px-lg py-xl">
+<h2 class="text-title-md font-bold text-on-secondary">Fatec Conecta</h2>
+<p class="text-label-md text-on-secondary/70">Gestão de Biblioteca</p>
+</div>
+<div class="flex-1 px-md space-y-xs overflow-y-auto custom-scrollbar">
+<a class="flex items-center gap-md px-md py-md rounded-xl text-on-secondary/70 hover:text-on-secondary hover:bg-secondary-fixed-variant/20 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-md rounded-xl bg-secondary-container text-on-secondary-container border-l-4 border-primary font-bold scale-[0.98] transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span class="font-label-md text-label-md">Livros</span>
+</a>
+<a class="flex items-center gap-md px-md py-md rounded-xl text-on-secondary/70 hover:text-on-secondary hover:bg-secondary-fixed-variant/20 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="swap_horiz">swap_horiz</span>
+<span class="font-label-md text-label-md">Empréstimos</span>
+</a>
+<a class="flex items-center gap-md px-md py-md rounded-xl text-on-secondary/70 hover:text-on-secondary hover:bg-secondary-fixed-variant/20 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-md text-label-md">Alunos</span>
+</a>
+<a class="flex items-center gap-md px-md py-md rounded-xl text-on-secondary/70 hover:text-on-secondary hover:bg-secondary-fixed-variant/20 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="assessment">assessment</span>
+<span class="font-label-md text-label-md">Relatórios</span>
+</a>
+<a class="flex items-center gap-md px-md py-md rounded-xl text-on-secondary/70 hover:text-on-secondary hover:bg-secondary-fixed-variant/20 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-md text-label-md">Configurações</span>
+</a>
+</div>
+<div class="p-md mt-auto border-t border-white/10">
+<a class="flex items-center gap-md px-md py-md rounded-xl text-on-secondary/70 hover:text-on-secondary hover:bg-secondary-fixed-variant/20 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-label-md text-label-md">Sair</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="ml-[280px] mt-16 p-container-margin">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-lg mb-xl">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Gerenciamento de Acervo</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Visualize, edite e organize todos os livros da biblioteca em um só lugar.</p>
+</div>
+<button class="bg-primary text-on-primary px-xl py-md rounded-xl font-title-md flex items-center gap-sm hover:opacity-90 transition-opacity shadow-sm">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+                Adicionar Livro
+            </button>
+</div>
+<!-- Filters & Search Bento Card -->
+<div class="bg-surface-container-lowest border border-neutral-200 rounded-xl p-lg mb-lg">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-md items-end">
+<div class="md:col-span-5">
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs ml-1">PESQUISAR TÍTULO OU AUTOR</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="search">search</span>
+<input class="w-full pl-[48px] pr-md py-md bg-white border border-neutral-200 rounded-xl focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all outline-none text-body-md" placeholder="Ex: Engenharia de Software..." type="text"/>
+</div>
+</div>
+<div class="md:col-span-3">
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs ml-1">CATEGORIA</label>
+<select class="w-full px-md py-md bg-white border border-neutral-200 rounded-xl focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all outline-none text-body-md appearance-none">
+<option>Todas as Categorias</option>
+<option>Tecnologia</option>
+<option>Cálculo</option>
+<option>Administração</option>
+<option>Redes</option>
+</select>
+</div>
+<div class="md:col-span-2">
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs ml-1">STATUS</label>
+<select class="w-full px-md py-md bg-white border border-neutral-200 rounded-xl focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all outline-none text-body-md appearance-none">
+<option>Todos</option>
+<option>Disponível</option>
+<option>Indisponível</option>
+</select>
+</div>
+<div class="md:col-span-2">
+<button class="w-full px-md py-md border border-neutral-300 text-secondary rounded-xl font-title-md flex items-center justify-center gap-sm hover:bg-neutral-100 transition-colors">
+<span class="material-symbols-outlined" data-icon="filter_list">filter_list</span>
+                        Filtros
+                    </button>
+</div>
+</div>
+</div>
+<!-- Modern Data Table -->
+<div class="bg-white border border-neutral-200 rounded-xl overflow-hidden shadow-[0px_4px_12px_rgba(58,84,97,0.08)]">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-neutral-100 border-b border-neutral-200">
+<th class="px-lg py-md font-label-sm text-label-sm text-[#757575] uppercase tracking-wider">Capa</th>
+<th class="px-lg py-md font-label-sm text-label-sm text-[#757575] uppercase tracking-wider">Título</th>
+<th class="px-lg py-md font-label-sm text-label-sm text-[#757575] uppercase tracking-wider">Autor</th>
+<th class="px-lg py-md font-label-sm text-label-sm text-[#757575] uppercase tracking-wider">Categoria</th>
+<th class="px-lg py-md font-label-sm text-label-sm text-[#757575] uppercase tracking-wider text-center">Qtd. Disponível</th>
+<th class="px-lg py-md font-label-sm text-label-sm text-[#757575] uppercase tracking-wider">Status</th>
+<th class="px-lg py-md font-label-sm text-label-sm text-[#757575] uppercase tracking-wider text-right">Ações</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-neutral-100">
+<!-- Row 1 -->
+<tr class="hover:bg-neutral-50 transition-colors group">
+<td class="px-lg py-md">
+<div class="w-12 h-16 bg-surface-variant rounded-lg overflow-hidden flex-shrink-0">
+<img alt="Capa do livro" class="w-full h-full object-cover" data-alt="A high-quality book cover for a modern software engineering textbook. The cover features minimalist abstract geometric patterns in shades of deep red and grey. The lighting is soft and studio-quality, emphasizing the texture of the matte paper finish. The overall aesthetic is professional, academic, and clean, fitting a modern library management system." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBrRKJmjRNUSNjqBUBbcY0Gpxu7Syyv7c5X7P-FZDjYpMSd05wUq-Y1SIzhSBgBiLIAzthhk9BjZGWtGZSFfyN2_NH8LvaB77UURjn1mLS914VZGD0e_q1G-ca4mOaarUCgiWPWkoC9HDav4ev7vsxgz89TYYfC5rjabLcwZWrr5S6SiMjRqPs5IB7L1_Lz9Xgrufi7ofi1kDORs080WIOVYimhglwwMTdFzRbPJxGK5V0abi3KKWg6dtl3iIGpkUYKcHC4EO2UxZA"/>
+</div>
+</td>
+<td class="px-lg py-md">
+<div class="flex flex-col">
+<span class="font-title-md text-title-md text-on-surface">Engenharia de Software Moderna</span>
+<span class="text-label-md text-on-surface-variant">ISBN: 978-85-8055-612-4</span>
+</div>
+</td>
+<td class="px-lg py-md font-body-md text-body-md text-on-surface">Marco Tulio Valente</td>
+<td class="px-lg py-md">
+<span class="bg-secondary-container/30 text-secondary px-sm py-1 rounded-lg font-label-sm text-label-sm">Tecnologia</span>
+</td>
+<td class="px-lg py-md font-body-md text-body-md text-on-surface text-center font-bold">12</td>
+<td class="px-lg py-md">
+<span class="bg-green-100 text-green-700 px-sm py-1 rounded-[4px] font-label-sm text-label-sm font-bold uppercase">Disponível</span>
+</td>
+<td class="px-lg py-md text-right">
+<div class="flex items-center justify-end gap-sm opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-sm text-secondary hover:bg-secondary-container/20 rounded-lg transition-colors" title="Editar">
+<span class="material-symbols-outlined" data-icon="edit">edit</span>
+</button>
+<button class="p-sm text-primary hover:bg-error-container/30 rounded-lg transition-colors" title="Remover">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-neutral-50 transition-colors group">
+<td class="px-lg py-md">
+<div class="w-12 h-16 bg-surface-variant rounded-lg overflow-hidden flex-shrink-0">
+<img alt="Capa do livro" class="w-full h-full object-cover" data-alt="Close-up of a premium textbook cover titled 'Cálculo Diferencial' with a complex mathematical wave-form graphic. The colors are muted blues and warm reds. The image has a professional lighting setup that highlights the book's spine and cover texture, creating a sophisticated and intellectual vibe. Modern light-mode background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDCCx-JKXUtG_HuPhIkCnMmexkQIoSAcBrKhj6f9yI8Gqf980_UQ9mYxNsVaMcLrKtfsPyQks6MzMvQRZrCky89zT3hTbhsa8jSUN_z7HKUbaP9bfbrHjJwmT6rcIh9jX_36IWrRINHi1XUMVbs3KRh_ZM-Lk9fElQZ7giPMed9bioXWI1FzLBbagN4DEUg3DBXeFle2Ln4cQ1EIkcWSQn4CSv2ymNKeaRkFS-F5QU28NZTPUI9vg4ql4KX8Bo2IvIbg0iCv2SIGOY"/>
+</div>
+</td>
+<td class="px-lg py-md">
+<div class="flex flex-col">
+<span class="font-title-md text-title-md text-on-surface">Cálculo Diferencial e Integral</span>
+<span class="text-label-md text-on-surface-variant">ISBN: 978-85-221-1258-6</span>
+</div>
+</td>
+<td class="px-lg py-md font-body-md text-body-md text-on-surface">James Stewart</td>
+<td class="px-lg py-md">
+<span class="bg-secondary-container/30 text-secondary px-sm py-1 rounded-lg font-label-sm text-label-sm">Matemática</span>
+</td>
+<td class="px-lg py-md font-body-md text-body-md text-on-surface text-center font-bold">0</td>
+<td class="px-lg py-md">
+<span class="bg-red-100 text-red-700 px-sm py-1 rounded-[4px] font-label-sm text-label-sm font-bold uppercase">Indisponível</span>
+</td>
+<td class="px-lg py-md text-right">
+<div class="flex items-center justify-end gap-sm opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-sm text-secondary hover:bg-secondary-container/20 rounded-lg transition-colors" title="Editar">
+<span class="material-symbols-outlined" data-icon="edit">edit</span>
+</button>
+<button class="p-sm text-primary hover:bg-error-container/30 rounded-lg transition-colors" title="Remover">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-neutral-50 transition-colors group">
+<td class="px-lg py-md">
+<div class="w-12 h-16 bg-surface-variant rounded-lg overflow-hidden flex-shrink-0">
+<img alt="Capa do livro" class="w-full h-full object-cover" data-alt="A modern business administration book cover with a clean typographic layout. The title 'Administração de Empresas' is prominent in a bold sans-serif font. The color scheme features deep burgundies and crisp whites. High-quality lighting showcases the durability and professional design of the hardcover. Minimalist desk background with soft focus." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCMjzHXcudkBdUFCMbY4l-schsFzUP7w0O0_T7N638kbWiLhmrYdEGbKaGzj0xQtdj7nBMqAdynWLUR9ipt76hjiNsopVvU4TVKzAQV2b_a2ug5hsqtd_7yf_WNrEGU3weILztjwe-g2Brd06gbW9HBiBsdx6teRQMl53gruoj544585v9G7lmQDAIW6Oi_n8c86lJf75dlu7ZXYt9phHsEtIr78oYWdnvQStEiruedkggle63Ay4CACRiJXwC0C-23FSO6eX3baLM"/>
+</div>
+</td>
+<td class="px-lg py-md">
+<div class="flex flex-col">
+<span class="font-title-md text-title-md text-on-surface">Administração Contemporânea</span>
+<span class="text-label-md text-on-surface-variant">ISBN: 978-85-221-1259-3</span>
+</div>
+</td>
+<td class="px-lg py-md font-body-md text-body-md text-on-surface">Gareth Jones</td>
+<td class="px-lg py-md">
+<span class="bg-secondary-container/30 text-secondary px-sm py-1 rounded-lg font-label-sm text-label-sm">Administração</span>
+</td>
+<td class="px-lg py-md font-body-md text-body-md text-on-surface text-center font-bold">8</td>
+<td class="px-lg py-md">
+<span class="bg-green-100 text-green-700 px-sm py-1 rounded-[4px] font-label-sm text-label-sm font-bold uppercase">Disponível</span>
+</td>
+<td class="px-lg py-md text-right">
+<div class="flex items-center justify-end gap-sm opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-sm text-secondary hover:bg-secondary-container/20 rounded-lg transition-colors" title="Editar">
+<span class="material-symbols-outlined" data-icon="edit">edit</span>
+</button>
+<button class="p-sm text-primary hover:bg-error-container/30 rounded-lg transition-colors" title="Remover">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-neutral-50 transition-colors group">
+<td class="px-lg py-md">
+<div class="w-12 h-16 bg-surface-variant rounded-lg overflow-hidden flex-shrink-0">
+<img alt="Capa do livro" class="w-full h-full object-cover" data-alt="Scientific textbook cover about 'Sistemas de Redes' with a glowing digital circuit board illustration. The lighting is dramatic, with cool blue neon accents against a dark red background. The book is presented in a way that suggests technical expertise and modern connectivity. The photo is crisp and professional." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDa1Rswt3alIfVrcM9qN0ICaEl726lA4p9ioaQ3iz8XpR-ZiuHIgEmhjWTWaM55L95ixCMBgP5e37C1pN43gDaBXm1vPOfgKzJU-5zAwUXwVUdH-6WY4Z9-mYJsx1uebO-AA22eoP_nCKB6slDeMJxzCnvyxo0KBdNV6CXtW7mvEK2IAY4JmRPW3ZVa-Br11B_MPMGZ2mdpMkPef3xLH9AqXbXg7S9h47jXFtpdfiUS2T6Wk3bbK68e392uMVSIWDDdm7E0A6AAYWM"/>
+</div>
+</td>
+<td class="px-lg py-md">
+<div class="flex flex-col">
+<span class="font-title-md text-title-md text-on-surface">Redes de Computadores</span>
+<span class="text-label-md text-on-surface-variant">ISBN: 978-85-352-3685-9</span>
+</div>
+</td>
+<td class="px-lg py-md font-body-md text-body-md text-on-surface">Andrew S. Tanenbaum</td>
+<td class="px-lg py-md">
+<span class="bg-secondary-container/30 text-secondary px-sm py-1 rounded-lg font-label-sm text-label-sm">Redes</span>
+</td>
+<td class="px-lg py-md font-body-md text-body-md text-on-surface text-center font-bold">5</td>
+<td class="px-lg py-md">
+<span class="bg-green-100 text-green-700 px-sm py-1 rounded-[4px] font-label-sm text-label-sm font-bold uppercase">Disponível</span>
+</td>
+<td class="px-lg py-md text-right">
+<div class="flex items-center justify-end gap-sm opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-sm text-secondary hover:bg-secondary-container/20 rounded-lg transition-colors" title="Editar">
+<span class="material-symbols-outlined" data-icon="edit">edit</span>
+</button>
+<button class="p-sm text-primary hover:bg-error-container/30 rounded-lg transition-colors" title="Remover">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="px-lg py-md flex items-center justify-between border-t border-neutral-100 bg-neutral-50/50">
+<span class="font-label-md text-label-md text-on-surface-variant">Mostrando 1-4 de 248 livros</span>
+<div class="flex items-center gap-xs">
+<button class="p-sm rounded-lg hover:bg-neutral-200 text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="chevron_left">chevron_left</span>
+</button>
+<button class="w-8 h-8 rounded-lg bg-primary text-on-primary font-label-sm text-label-sm flex items-center justify-center">1</button>
+<button class="w-8 h-8 rounded-lg hover:bg-neutral-200 font-label-sm text-label-sm flex items-center justify-center">2</button>
+<button class="w-8 h-8 rounded-lg hover:bg-neutral-200 font-label-sm text-label-sm flex items-center justify-center">3</button>
+<span class="mx-xs">...</span>
+<button class="w-8 h-8 rounded-lg hover:bg-neutral-200 font-label-sm text-label-sm flex items-center justify-center">62</button>
+<button class="p-sm rounded-lg hover:bg-neutral-200 text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- System Stats Mini-Bento (Floating Context) -->
+<div class="mt-xl grid grid-cols-1 md:grid-cols-4 gap-lg">
+<div class="bg-surface-container-low border border-neutral-200 rounded-xl p-md flex items-center gap-md">
+<div class="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+</div>
+<div>
+<span class="block font-label-sm text-label-sm text-on-surface-variant">TOTAL DE LIVROS</span>
+<span class="block font-headline-md text-headline-md">1.248</span>
+</div>
+</div>
+<div class="bg-surface-container-low border border-neutral-200 rounded-xl p-md flex items-center gap-md">
+<div class="w-12 h-12 rounded-full bg-secondary/10 text-secondary flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+</div>
+<div>
+<span class="block font-label-sm text-label-sm text-on-surface-variant">EMPRESTADOS</span>
+<span class="block font-headline-md text-headline-md">432</span>
+</div>
+</div>
+<div class="bg-surface-container-low border border-neutral-200 rounded-xl p-md flex items-center gap-md">
+<div class="w-12 h-12 rounded-full bg-green-100 text-green-700 flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="check_circle">check_circle</span>
+</div>
+<div>
+<span class="block font-label-sm text-label-sm text-on-surface-variant">DISPONÍVEIS</span>
+<span class="block font-headline-md text-headline-md">816</span>
+</div>
+</div>
+<div class="bg-surface-container-low border border-neutral-200 rounded-xl p-md flex items-center gap-md">
+<div class="w-12 h-12 rounded-full bg-red-100 text-red-700 flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="report">report</span>
+</div>
+<div>
+<span class="block font-label-sm text-label-sm text-on-surface-variant">MANUTENÇÃO</span>
+<span class="block font-headline-md text-headline-md">14</span>
+</div>
+</div>
+</div>
+</main>
+<!-- FAB for mobile quick actions -->
+<div class="md:hidden fixed bottom-8 right-8 z-50">
+<button class="w-14 h-14 bg-primary text-on-primary rounded-full shadow-lg flex items-center justify-center hover:scale-110 active:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+</div>
+<script>
+        // Simple micro-interaction for rows
+        document.querySelectorAll('tbody tr').forEach(row => {
+            row.addEventListener('click', () => {
+                // Future expansion: open detail sidebar or modal
+                console.log('Selecionou livro');
+            });
+        });
+
+        // Search highlight mock
+        const searchInput = document.querySelector('input[placeholder="Ex: Engenharia de Software..."]');
+        searchInput.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            document.querySelectorAll('tbody tr').forEach(row => {
+                const text = row.innerText.toLowerCase();
+                row.style.display = text.includes(term) ? '' : 'none';
+            });
+        });
+    </script>
+</body></html>
