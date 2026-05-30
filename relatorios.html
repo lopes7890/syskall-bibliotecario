@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Relatórios de Movimentação - Fatec Conecta</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-secondary-container": "#4c6674",
+                      "surface-bright": "#fff8f7",
+                      "on-surface": "#271816",
+                      "on-primary": "#ffffff",
+                      "on-secondary": "#ffffff",
+                      "on-primary-fixed-variant": "#93000b",
+                      "inverse-on-surface": "#ffedea",
+                      "on-background": "#271816",
+                      "surface-tint": "#ba1a1b",
+                      "surface-container-high": "#ffe2de",
+                      "on-tertiary-fixed-variant": "#00468b",
+                      "secondary-fixed": "#cbe7f6",
+                      "outline": "#906f6c",
+                      "inverse-surface": "#3e2c2a",
+                      "on-primary-container": "#ffc0b9",
+                      "on-tertiary-container": "#b7d0ff",
+                      "on-surface-variant": "#5b403d",
+                      "on-secondary-fixed-variant": "#304a57",
+                      "surface-container-low": "#fff0ee",
+                      "primary-fixed": "#ffdad6",
+                      "tertiary-fixed": "#d6e3ff",
+                      "error": "#ba1a1a",
+                      "on-tertiary-fixed": "#001b3d",
+                      "tertiary": "#004081",
+                      "inverse-primary": "#ffb4ab",
+                      "error-container": "#ffdad6",
+                      "secondary": "#48626f",
+                      "secondary-fixed-dim": "#afcbda",
+                      "on-error-container": "#93000a",
+                      "on-tertiary": "#ffffff",
+                      "on-error": "#ffffff",
+                      "surface-variant": "#fadcd8",
+                      "tertiary-fixed-dim": "#a9c7ff",
+                      "surface": "#fff8f7",
+                      "on-secondary-fixed": "#011e2a",
+                      "background": "#fff8f7",
+                      "primary-container": "#b11116",
+                      "surface-container": "#ffe9e6",
+                      "on-primary-fixed": "#410002",
+                      "surface-container-highest": "#fadcd8",
+                      "primary": "#880009",
+                      "secondary-container": "#c8e4f4",
+                      "surface-container-lowest": "#ffffff",
+                      "outline-variant": "#e4beb9",
+                      "tertiary-container": "#0057ab",
+                      "primary-fixed-dim": "#ffb4ab",
+                      "surface-dim": "#f1d3d0"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "xs": "4px",
+                      "unit": "4px",
+                      "lg": "24px",
+                      "xl": "32px",
+                      "sm": "8px",
+                      "xxl": "48px",
+                      "container-margin": "24px",
+                      "md": "16px",
+                      "gutter": "16px",
+                      "sidebar-height": "280px"
+              },
+              "fontFamily": {
+                      "label-md": ["Hanken Grotesk"],
+                      "body-lg": ["Hanken Grotesk"],
+                      "label-sm": ["Hanken Grotesk"],
+                      "body-md": ["Hanken Grotesk"],
+                      "title-md": ["Hanken Grotesk"],
+                      "headline-md": ["Hanken Grotesk"],
+                      "display-lg": ["Hanken Grotesk"],
+                      "headline-lg": ["Hanken Grotesk"],
+                      "title-lg": ["Hanken Grotesk"]
+              },
+              "fontSize": {
+                      "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+                      "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                      "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                      "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                      "title-md": ["16px", { "lineHeight": "24px", "fontWeight": "600" }],
+                      "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                      "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                      "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                      "title-lg": ["20px", { "lineHeight": "28px", "fontWeight": "600" }]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        body { font-family: 'Hanken Grotesk', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .material-symbols-outlined.filled { font-variation-settings: 'FILL' 1; }
+        
+        /* Subtle shadow for Level 2 surfaces */
+        .shadow-ambient { box-shadow: 0px 4px 12px rgba(58, 84, 97, 0.08); }
+    </style>
+</head>
+<body class="bg-surface text-on-surface h-screen w-full flex flex-col overflow-hidden">
+<!-- TopNavBar -->
+<header class="bg-primary dark:bg-primary-container text-on-primary dark:text-on-primary-container flex justify-between items-center px-container-margin w-full fixed top-0 z-50 h-16 flat no shadows">
+<div class="flex items-center gap-md">
+<div class="text-title-md font-title-md font-bold text-on-primary dark:text-on-primary-container tracking-tight">
+                Fatec Conecta
+            </div>
+<!-- Search on left logic -->
+<div class="ml-xl relative hidden md:block w-96">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-primary/60 text-[20px]">search</span>
+<input class="w-full bg-on-primary/10 border-none rounded-full py-2 pl-10 pr-4 text-body-md font-body-md text-on-primary placeholder:text-on-primary/60 focus:ring-2 focus:ring-on-primary/30 transition-all" placeholder="Pesquisar..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-lg">
+<button class="hover:bg-primary-container/20 transition-colors p-2 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="flex items-center gap-sm cursor-pointer hover:bg-primary-container/20 transition-colors py-1 px-2 rounded-lg">
+<img alt="Foto de perfil do bibliotecário" class="w-8 h-8 rounded-full border border-on-primary/20" data-alt="A small, circular profile picture of a professional librarian, likely a middle-aged individual with a warm, approachable expression. They are wearing business casual attire suitable for an academic environment. The lighting is soft and natural, suggesting a modern, well-lit library or office setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCscCIRm4zsAA-XlKerPshn2w43S3-iyo1ACDMhvGDRQDXedVNa2F3TOGcFn5DixOMRY4mtlZs3sisO8EFsdQjX2bwke2BEpxpJFAktihvyDlVAsG42gjGolLB1JKPHwn7QYrGXVpMSOnrs_OEYVfMtAUZ71iPVjZyJeswyBr5AyBWCIqXpQjOQtlgnQg2J-psfgHAfpN2P0lwXIGpfAhFbyhjVMCk_q8549lL0cq6VDHEDsKZ-Ikqd9HAbjVRXBamsYLMfL_k4bw"/>
+<span class="font-label-md text-label-md hidden md:block">Bibliotecário Nome</span>
+</div>
+</div>
+</header>
+<div class="flex flex-1 pt-16 h-full">
+<!-- SideNavBar -->
+<nav class="hidden md:flex flex-col w-[280px] h-[calc(100vh-64px)] fixed left-0 py-container-margin bg-secondary dark:bg-secondary-fixed-dim border-r border-secondary/10">
+<div class="px-container-margin mb-xl">
+<h2 class="text-title-md font-title-md font-bold text-on-secondary">Fatec Conecta</h2>
+<p class="font-label-sm text-label-sm text-on-secondary/70 mt-1 uppercase tracking-wider">Gestão de Biblioteca</p>
+</div>
+<ul class="flex-1 px-md flex flex-col gap-sm">
+<li>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-secondary/70 hover:text-on-secondary hover:bg-secondary-fixed-variant/30 transition-all duration-200" href="dashbord.html">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md text-body-md">Dashboard</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-secondary/70 hover:text-on-secondary hover:bg-secondary-fixed-variant/30 transition-all duration-200" href="gerenciar_livro.html">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="font-body-md text-body-md">Livros</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-secondary/70 hover:text-on-secondary hover:bg-secondary-fixed-variant/30 transition-all duration-200" href="emprestimos.html">
+<span class="material-symbols-outlined">swap_horiz</span>
+<span class="font-body-md text-body-md">Empréstimos</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-secondary/70 hover:text-on-secondary hover:bg-secondary-fixed-variant/30 transition-all duration-200" href="gerenciar_alunos.html">
+<span class="material-symbols-outlined">person</span>
+<span class="font-body-md text-body-md">Alunos</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-secondary-container text-on-secondary-container border-l-4 border-primary font-bold scale-[0.98] transition-transform shadow-sm" href="relatorios.html">
+<span class="material-symbols-outlined filled">assessment</span>
+<span class="font-body-md text-body-md">Relatórios</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-secondary/70 hover:text-on-secondary hover:bg-secondary-fixed-variant/30 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-md text-body-md">Configurações</span>
+</a>
+</li>
+</ul>
+<div class="px-md mt-auto">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-secondary/70 hover:text-on-secondary hover:bg-secondary-fixed-variant/30 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-body-md text-body-md">Sair</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 ml-[280px] p-container-margin overflow-y-auto bg-surface-container-low h-full">
+<!-- Page Header -->
+<div class="flex justify-between items-center mb-xl">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Relatórios de Movimentação</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Visualize e exporte o histórico de transações da biblioteca.</p>
+</div>
+<button class="bg-primary-container text-on-primary hover:bg-primary transition-colors duration-200 flex items-center gap-2 px-6 py-3 rounded-[12px] font-title-md text-title-md shadow-ambient">
+<span class="material-symbols-outlined">picture_as_pdf</span>
+                    Gerar relatório em PDF
+                </button>
+</div>
+<!-- Filters Section (Bento grid style snippet) -->
+<div class="grid grid-cols-12 gap-md mb-lg">
+<div class="col-span-12 md:col-span-8 bg-surface-container-lowest rounded-[12px] border border-outline-variant/30 p-md flex items-end gap-md shadow-sm">
+<div class="flex-1">
+<label class="block font-label-md text-label-md text-on-surface-variant mb-1">Período</label>
+<div class="flex items-center gap-2">
+<input class="w-full rounded-[12px] border-outline-variant/50 font-body-md text-body-md text-on-surface focus:border-secondary focus:ring-2 focus:ring-secondary/20 h-10" type="date"/>
+<span class="text-on-surface-variant">até</span>
+<input class="w-full rounded-[12px] border-outline-variant/50 font-body-md text-body-md text-on-surface focus:border-secondary focus:ring-2 focus:ring-secondary/20 h-10" type="date"/>
+</div>
+</div>
+<div class="flex-1">
+<label class="block font-label-md text-label-md text-on-surface-variant mb-1">Tipo de Movimentação</label>
+<select class="w-full rounded-[12px] border-outline-variant/50 font-body-md text-body-md text-on-surface focus:border-secondary focus:ring-2 focus:ring-secondary/20 h-10">
+<option>Todos</option>
+<option>Empréstimo</option>
+<option>Devolução</option>
+<option>Renovação</option>
+</select>
+</div>
+<button class="border border-outline-variant text-secondary hover:bg-surface-dim transition-colors duration-200 px-4 py-2 rounded-[12px] h-10 font-label-md text-label-md flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">filter_list</span> Filtrar
+                     </button>
+</div>
+<div class="col-span-12 md:col-span-4 bg-primary-container text-on-primary rounded-[12px] p-md flex flex-col justify-center items-start shadow-ambient relative overflow-hidden">
+<div class="absolute -right-4 -bottom-4 opacity-10">
+<span class="material-symbols-outlined text-[120px]">monitoring</span>
+</div>
+<span class="font-label-md text-label-md uppercase tracking-wider opacity-80">Total no Período</span>
+<span class="font-display-lg text-display-lg font-bold leading-tight mt-1">1,284</span>
+<span class="font-label-sm text-label-sm opacity-80 mt-1 flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">arrow_upward</span> 12% vs último mês</span>
+</div>
+</div>
+<!-- Data Table Card -->
+<div class="bg-surface-container-lowest rounded-[12px] border border-outline-variant/30 shadow-ambient overflow-hidden flex flex-col">
+<div class="px-lg py-md border-b border-surface-variant flex justify-between items-center bg-surface-bright">
+<h3 class="font-title-lg text-title-lg text-on-surface">Histórico Detalhado</h3>
+<div class="flex gap-2">
+<!-- Pagination simplified -->
+<button class="p-1 text-on-surface-variant hover:text-on-surface rounded disabled:opacity-50"><span class="material-symbols-outlined">chevron_left</span></button>
+<span class="font-label-md text-label-md self-center px-2">Página 1 de 45</span>
+<button class="p-1 text-on-surface-variant hover:text-on-surface rounded"><span class="material-symbols-outlined">chevron_right</span></button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-variant/30">
+<th class="px-lg py-3 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold border-b border-surface-variant">Aluno</th>
+<th class="px-lg py-3 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold border-b border-surface-variant">Livro</th>
+<th class="px-lg py-3 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold border-b border-surface-variant">Tipo</th>
+<th class="px-lg py-3 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold border-b border-surface-variant">Data</th>
+<th class="px-lg py-3 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold border-b border-surface-variant">Hora</th>
+<th class="px-lg py-3 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold border-b border-surface-variant text-right">Ações</th>
+</tr>
+</thead>
+<tbody class="font-body-md text-body-md text-on-surface divide-y divide-surface-variant">
+<tr class="hover:bg-surface-bright/50 transition-colors group">
+<td class="px-lg py-4 font-medium">Ana Carolina Silva</td>
+<td class="px-lg py-4">O Senhor dos Anéis: A Sociedade do Anel</td>
+<td class="px-lg py-4">
+<span class="bg-tertiary-container/20 text-tertiary-container px-2 py-1 rounded-[4px] font-label-sm text-label-sm font-bold">Empréstimo</span>
+</td>
+<td class="px-lg py-4 text-on-surface-variant">15/10/2023</td>
+<td class="px-lg py-4 text-on-surface-variant">14:32</td>
+<td class="px-lg py-4 text-right">
+<button class="text-secondary hover:text-primary transition-colors opacity-0 group-hover:opacity-100"><span class="material-symbols-outlined text-[20px]">visibility</span></button>
+</td>
+</tr>
+<tr class="hover:bg-surface-bright/50 transition-colors group">
+<td class="px-lg py-4 font-medium">Carlos Eduardo Souza</td>
+<td class="px-lg py-4">Design para Quem Não é Designer</td>
+<td class="px-lg py-4">
+<span class="bg-primary/10 text-primary px-2 py-1 rounded-[4px] font-label-sm text-label-sm font-bold">Devolução</span>
+</td>
+<td class="px-lg py-4 text-on-surface-variant">15/10/2023</td>
+<td class="px-lg py-4 text-on-surface-variant">11:15</td>
+<td class="px-lg py-4 text-right">
+<button class="text-secondary hover:text-primary transition-colors opacity-0 group-hover:opacity-100"><span class="material-symbols-outlined text-[20px]">visibility</span></button>
+</td>
+</tr>
+<tr class="hover:bg-surface-bright/50 transition-colors group">
+<td class="px-lg py-4 font-medium">Mariana Costa</td>
+<td class="px-lg py-4">Clean Code: Habilidades Práticas do Agile</td>
+<td class="px-lg py-4">
+<span class="bg-secondary/10 text-secondary px-2 py-1 rounded-[4px] font-label-sm text-label-sm font-bold">Renovação</span>
+</td>
+<td class="px-lg py-4 text-on-surface-variant">14/10/2023</td>
+<td class="px-lg py-4 text-on-surface-variant">16:45</td>
+<td class="px-lg py-4 text-right">
+<button class="text-secondary hover:text-primary transition-colors opacity-0 group-hover:opacity-100"><span class="material-symbols-outlined text-[20px]">visibility</span></button>
+</td>
+</tr>
+<tr class="hover:bg-surface-bright/50 transition-colors group">
+<td class="px-lg py-4 font-medium">Lucas Pereira</td>
+<td class="px-lg py-4">Dom Casmurro</td>
+<td class="px-lg py-4">
+<span class="bg-tertiary-container/20 text-tertiary-container px-2 py-1 rounded-[4px] font-label-sm text-label-sm font-bold">Empréstimo</span>
+</td>
+<td class="px-lg py-4 text-on-surface-variant">14/10/2023</td>
+<td class="px-lg py-4 text-on-surface-variant">09:10</td>
+<td class="px-lg py-4 text-right">
+<button class="text-secondary hover:text-primary transition-colors opacity-0 group-hover:opacity-100"><span class="material-symbols-outlined text-[20px]">visibility</span></button>
+</td>
+</tr>
+<tr class="hover:bg-surface-bright/50 transition-colors group">
+<td class="px-lg py-4 font-medium">Beatriz Lima</td>
+<td class="px-lg py-4">Introdução à Algoritmos</td>
+<td class="px-lg py-4">
+<span class="bg-primary/10 text-primary px-2 py-1 rounded-[4px] font-label-sm text-label-sm font-bold">Devolução</span>
+</td>
+<td class="px-lg py-4 text-on-surface-variant">13/10/2023</td>
+<td class="px-lg py-4 text-on-surface-variant">15:20</td>
+<td class="px-lg py-4 text-right">
+<button class="text-secondary hover:text-primary transition-colors opacity-0 group-hover:opacity-100"><span class="material-symbols-outlined text-[20px]">visibility</span></button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</main>
+</div>
+</body></html>
